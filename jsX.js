@@ -4,6 +4,10 @@ HTMLElement.prototype.agregaElementoAlFinal = function ( elemento ){
 	this.parentNode.appendChild( elemento );
 }
 
+HTMLElement.prototype.setTexto = function ( texto ){
+	this.innerText = texto;
+}
+
 function ajustarDisenio (){
 	ajustaEstructuraPagina();
 	ajustaMenu();
@@ -26,7 +30,7 @@ function ajustaEstructuraPagina (){
 // }
 
 function ajustaAnchoContenedorPrincipal (){
-	getElementos( '#wrapper' ).forEach( function ( elemento ){
+	getElementos( SELECTOR_CONTENEDOR_PRINCIPAL ).forEach( function ( elemento ){
 		elemento.style.width   = '';
 		elemento.style.display = 'table';
 	});
@@ -51,6 +55,7 @@ function mueveElemento ( selectorElemento, selectorDestino, posicion ){
 function copiarElemento ( selectorElemento ){
 	var elemento = getElemento( selectorElemento );
 	if ( elemento != null ){
+
 		return elemento.cloneNode( true );
 	}
 
@@ -99,7 +104,7 @@ function pegaElementoDespues ( elemento, selectorDestino ){
 		if ( elementoHermano.nextSibling ){
 			elementoHermano.parentNode.insertBefore( elemento, elementoHermano.nextSibling );
 		} else {
-			elementoHermano.parentNode.appendChild( elemento );
+			elementoHermano.agregaElementoAlFinal( elemento );
 		}
 
 	}
@@ -125,7 +130,7 @@ function agregaEstilosSecciones (){
 	});
 	
 	getElementos( SELECTOR_CONTENEDOR ).forEach( function ( elemento ){
-		elemento.removeAttribute('style');
+		elemento.removeAttribute( 'style' );
 	});
 
 	getElementos( SELECTOR_ELEMENTOS_MENU_SECCIONES ).forEach( function ( elemento ){
@@ -234,22 +239,22 @@ function procesaEnlace ( enlace ){
 			enlace.setAttribute( 'target', '_blank' );
 			break;
 		case PAGINA_SPA_PRINCIPAL:
-			enlace.innerText = 'SPA';
+			enlace.setTexto( 'SPA' );
 			break;
 		case PAGINA_SPA_INSCRIPCION:
-			enlace.innerText = 'Inscribir SPA';
+			enlace.setTexto( 'Inscribir SPA' );
 			break;
 		case PAGINA_PROFESORES_PRINCIPAL:
-			enlace.innerText = 'Profesores';
+			enlace.setTexto( 'Profesores' );
 			break;
 		case PAGINA_ALUMNOS_GENERAL:
-			enlace.innerText = 'General';
+			enlace.setTexto( 'General' );
 			break;
 		case PAGINA_ALUMNOS_MEDICOS:
-			enlace.innerText = 'Médicos';
+			enlace.setTexto( 'Médicos' );
 			break;
 		case PAGINA_ALUMNOS_DEPORTIVOS:
-			enlace.innerText = 'Deportivos';
+			enlace.setTexto( 'Deportivos' );
 			break;
 	}
 }
@@ -300,88 +305,76 @@ function getElementoEstilosMenu (){
 }
 
 function detectaPantalla (){
-
-	var opcionNavegacion;
-
-	if ( location.pathname.indexOf( '/PDF/' ) != 0 ){
-
-		switch ( location.pathname ){
-			case PAGINA_INICIO:
-			case PAGINA_PRINCIPAL1:
-			case PAGINA_PRINCIPAL2:
-				detectaIdentificacion();
-				break;
-			case PAGINA_OCUPABILIDAD:
-				pantallaOcupabilidad();
-				break;
-			case PAGINA_KARDEX:
-				pantallaKardex();
-				break;
-			case PAGINA_EQUIVALENCIAS:
-				pantallaEquivalencias();
-				break;
-			case PAGINA_CALENDARIO_PARCIALES:
-				pantallaParcialesCalendario();
-				break;
-			case PAGINA_INSCRIPCION_ACTUAL_HORARIO:
-				pantallaInscripcionActualHorario();
-				break;
-			case PAGINA_ALUMNOS_MEDICOS:
-				pantallaDatosMedicos();
-				break;
-			case PAGINA_ALUMNOS_DEPORTIVOS:
-				pantallaDatosDeportivos();
-				break;
-			case PAGINA_SPA_INSCRIPCION:
-				pantallaIncripcionSpa();
-				break;
-			case PAGINA_SPA_CALIFICACIONES:
-				pantallaCalificacionesSpa();
-				break;
-			case PAGINA_AGENDA_ESCOLAR:
-				pantallaAgendaEscolar();
-				break;
-			case PAGINA_CALENDARIO_ETS:
-			case PAGINA_CALENDARIO_ETS2:
-				pantallaCalendarioEts();
-				break;
-			case PAGINA_ALUMNOS_CALIFICACIONES:
-				pantallaCalificaciones();
-				break;
-			case PAGINA_INICIO_ACCESO:
-				// pantallaAlumnosInicio();
-				break;
-			case PAGINA_MAPA_CURRICULAR:
-				// informacionPlanes();
-				break;
-			case PAGINA_FICHA_REINSCRIPCION:
-				pantallaFichaReinscripcion();
-				break;
-			case PAGINA_COMPROBANTE_HORARIO:
-				horarioDirecto();
-				break;
-			case PAGINA_REINSCRIBIR:
-				pantallaReinscribir();
-				break;
-			case PAGINA_REPORTE_REINSCRIPCION:
-				pantallaReporteHorario();
-				break;
-			case PAGINA_TUTORES_COMENTARIOS:
-				pantallaTutoresComentarios();
-				break;
-		}
-		opcionNavegacion = OPCION_RECARGAR;
-
-	} else {
-		opcionNavegacion = OPCION_REGRESAR;
+	switch ( location.pathname ){
+		case PAGINA_INICIO:
+		case PAGINA_PRINCIPAL1:
+		case PAGINA_PRINCIPAL2:
+			detectaIdentificacion();
+			break;
+		case PAGINA_OCUPABILIDAD:
+			pantallaOcupabilidad();
+			break;
+		case PAGINA_KARDEX:
+			pantallaKardex();
+			break;
+		case PAGINA_EQUIVALENCIAS:
+			pantallaEquivalencias();
+			break;
+		case PAGINA_CALENDARIO_PARCIALES:
+			pantallaParcialesCalendario();
+			break;
+		case PAGINA_INSCRIPCION_ACTUAL_HORARIO:
+			pantallaInscripcionActualHorario();
+			break;
+		case PAGINA_ALUMNOS_MEDICOS:
+			pantallaDatosMedicos();
+			break;
+		case PAGINA_ALUMNOS_DEPORTIVOS:
+			pantallaDatosDeportivos();
+			break;
+		case PAGINA_SPA_INSCRIPCION:
+			pantallaIncripcionSpa();
+			break;
+		case PAGINA_SPA_CALIFICACIONES:
+			pantallaCalificacionesSpa();
+			break;
+		case PAGINA_AGENDA_ESCOLAR:
+			pantallaAgendaEscolar();
+			break;
+		case PAGINA_CALENDARIO_ETS:
+		case PAGINA_CALENDARIO_ETS2:
+			pantallaCalendarioEts();
+			break;
+		case PAGINA_ALUMNOS_CALIFICACIONES:
+			pantallaCalificaciones();
+			break;
+		case PAGINA_INICIO_ACCESO:
+			// pantallaAlumnosInicio();
+			break;
+		case PAGINA_MAPA_CURRICULAR:
+			// informacionPlanes();
+			break;
+		case PAGINA_FICHA_REINSCRIPCION:
+			pantallaFichaReinscripcion();
+			break;
+		case PAGINA_COMPROBANTE_HORARIO:
+			horarioDirecto();
+			break;
+		case PAGINA_REINSCRIBIR:
+			pantallaReinscribir();
+			break;
+		case PAGINA_REPORTE_REINSCRIPCION:
+			pantallaReporteHorario();
+			break;
+		case PAGINA_TUTORES_COMENTARIOS:
+			pantallaTutoresComentarios();
+			break;
+		case PAGINA_TUTORES_EVUALUACION:
+			pantallaEvaluacionTutores();
+			break;
 	}
-
-	var opcionNavegacionVigente = getOpcionNavegacionVigente();
-	if ( opcionNavegacion != opcionNavegacionVigente ){
-		androidJs.setOpcionNavegacion( opcionNavegacion );
-	}
-
 }
+
 	/*
 		case '/Alumnos/Evaluacion_docente/califica_profe.aspx':
 		case '/Alumnos/Evaluacion_Docente/Califica_Profe.aspx':
@@ -393,9 +386,6 @@ function detectaPantalla (){
 			break;
 		case '/Academica/horarios.aspx':
 			pantalla_horarios();
-			break;
-		case '/Alumnos/tutores/Evaluacion_Tutores.aspx':
-			pantalla_evaluacion_tutores();
 			break;
 	*/
 
@@ -571,7 +561,7 @@ function marcaOcupados (){
 		if ( lugares < 1 ){
 			var registro = registros[ i ].cloneNode( true );
 			registro.setAttribute( 'style', 'background-color: black; color: white;' );
-			registros[ i ].parentNode.appendChild( registro );
+			registros[ i ].agregaElementoAlFinal( registro );
 			registros[ i ].parentNode.deleteRow( i );
 			i--;
 			numRegistros--;
@@ -743,13 +733,13 @@ function getRegistrosOcultos ( registros, visibles ){
 
 function muestraRegistros ( visibles, registros ){
 	for ( var j = 0; j < visibles.length; j++ ){
-		registros[ visibles[ j ] ].setAttribute( 'class','visible' );
+		registros[ visibles[ j ] ].setAttribute( 'class', 'visible' );
 	}
 }
 
 function ocultaRegistros ( ocultos, registros ){
 	for ( var j = 0; j < ocultos.length; j++ ){
-		registros[ ocultos[ j ] ].setAttribute( 'class','oculto' );
+		registros[ ocultos[ j ] ].setAttribute( 'class', 'oculto' );
 	}
 }
 
@@ -768,7 +758,7 @@ function getNumeroRegistrosVisibles (){
 }
 
 function mensajeFiltrado (){
-	alert( MENSAJE_SIN_SELECCION_DESCRIPCION );
+	// alert( MENSAJE_SIN_SELECCION_DESCRIPCION );
 }
 
 function insertarBotonActualizarOcupabilidad ( controlesBuscador ){
@@ -789,7 +779,7 @@ function actualizaOcupabilidad2 (){
 
 function insertarControlExportarImportar ( controlesBuscador ){
 	controlesBuscador
-		.innerHTML += 	
+		.innerHTML += 
 			"<input type='button' id='" + ID_CONTROL_EXPIMP + "' value='" + CONTROL_IMPORTAR + "' title='" + MENSAJE_IMPORTAR + "'/>"+
 			"<div id='" + ID_CONTENEDOR_EXPORTAR + "'>"+
 				"<input id='" + ID_CONTROL_IMPORTACION + "' type = 'file'/>"+
@@ -939,7 +929,7 @@ function verTodo (){
 
 function verOcultar ( datos, inicio, opc ){
 	var tipo = 'oculto';
-	if (opc != 0){
+	if ( opc != 0 ){
 		tipo = 'visible';
 	}
 
@@ -947,6 +937,7 @@ function verOcultar ( datos, inicio, opc ){
 	for ( var i = inicio; i < numeroRegistros; i++ ){
 		datos[ i ].setAttribute( 'class', tipo );
 	}
+
 	contar();
 }
 
@@ -1246,7 +1237,7 @@ function validaRegistroColumnaSabado ( registro ){
 		valorColumnaSabado = valorColumnaSabado.trim();
 	}
 
-	return valorColumnaSabado.length > 0 && valorColumnaSabado != ESPACIO_HTML
+	return valorColumnaSabado.length > 0 && valorColumnaSabado != ESPACIO_HTML;
 }
 
 function eliminaColumnaDiaSabado ( tabla ){
@@ -1316,7 +1307,7 @@ function getNombrePlantelPagina (){
 
 	return direccionPagina.substring( 
 		  POSICION_INICIO_NOMBRE_PLANTEL
-		, direccionPagina.lastIndexOf('.ipn')
+		, direccionPagina.lastIndexOf( '.ipn' )
 	);
 }
 
@@ -1719,6 +1710,17 @@ function pantallaTutoresComentarios (){
 	agregaTamanioMinimoContenido();
 }
 
+function pantallaEvaluacionTutores (){
+	if ( evaluacionTutores() ){
+		document.getElementById( ID_CONTROL_CUESTIONARIO_TUTORES ).removeAttribute( 'style' );
+	}
+	agregaTamanioMinimoContenido();
+}
+
+function evaluacionTutores (){
+	return document.getElementById( ID_CONTROL_EVALUACION_TUTORES ) != null;
+}
+
 var IDENTIFICACION_USUARIO  = 'usuario';
 var IDENTIFICACION_PASSWORD = 'password';
 
@@ -1766,6 +1768,8 @@ var SELECTOR_ETIQUETAS_CONTROLES_ETS  = 'div#copy table table tr td:first-child 
 
 var SELECTOR_CONTENEDOR_FICHA_REINSCRIPCION = '#copy .container';
 
+var SELECTOR_CONTENEDOR_PRINCIPAL = '#wrapper';
+
 var DENTRO_DE  = 0;
 var ANTES_DE   = 1;
 var DESPUES_DE = 2;
@@ -1800,6 +1804,7 @@ var PAGINA_COMPROBANTE_HORARIO        = '/Alumnos/Reinscripciones/Comprobante_Ho
 var PAGINA_REINSCRIBIR                = '/Alumnos/Reinscripciones/reinscribir.aspx';
 var PAGINA_REPORTE_REINSCRIPCION      = '/Alumnos/Reinscripciones/Reporte_Horario.aspx';
 var PAGINA_TUTORES_COMENTARIOS        = '/Alumnos/tutores/comentarios.aspx';
+var PAGINA_TUTORES_EVUALUACION        = '/Alumnos/tutores/Evaluacion_Tutores.aspx';
 
 var COLUMNA_LUGARES_DISPONIBLES = 6;
 var COLUMNA_GRUPO               = 0;
@@ -1842,18 +1847,20 @@ var ID_CONTROL_COMENTARIO_RAPIDO = 'formularioEnlace';
 
 var ID_CONTENEDOR_EXPORTAR = 'exportar';
 
-var ID_CONTROL_MAPA_CURRICULAR  = 'ctl00_mainCopy_GridView1';
-var ID_CONTENEDOR_HORARIOS      = 'ctl00_mainCopy_dbgHorarios';
-var ID_CONTENEDOR_OCUPABILIDAD  = 'ctl00_mainCopy_GrvOcupabilidad';
-var ID_CONTENEDOR_PANEL1        = 'ctl00_mainCopy_Panel1';
-var ID_CONTENEDOR_PANEL2        = 'ctl00_mainCopy_Panel2';
-var ID_CONTENEDOR_EQUIVALENCIAS = 'ctl00_mainCopy_UP';
-var ID_CONTROL_PARCIAL          = 'ctl00_mainCopy_dpdnombrecaptura';
-var ID_CONTENIDO_INFORMACION    = 'ctl00_mainCopy_PnlDatos';
-var ID_TABLA_HORARIO_ACTUAL     = 'ctl00_mainCopy_GV_Horario';
-var ID_TABLA_HORARIO_ACTUAL2    = 'ctl00_mainCopy_GV_Horario2';
-var ID_CONTROL_PLAN_ESTUDIOS    = 'ctl00_mainCopy_dpdplan';
-var ID_CONTENEDOR_ELEMENTO      = 'ctl00_mainCopy_div';
+var ID_CONTROL_MAPA_CURRICULAR      = 'ctl00_mainCopy_GridView1';
+var ID_CONTENEDOR_HORARIOS          = 'ctl00_mainCopy_dbgHorarios';
+var ID_CONTENEDOR_OCUPABILIDAD      = 'ctl00_mainCopy_GrvOcupabilidad';
+var ID_CONTENEDOR_PANEL1            = 'ctl00_mainCopy_Panel1';
+var ID_CONTENEDOR_PANEL2            = 'ctl00_mainCopy_Panel2';
+var ID_CONTENEDOR_EQUIVALENCIAS     = 'ctl00_mainCopy_UP';
+var ID_CONTROL_PARCIAL              = 'ctl00_mainCopy_dpdnombrecaptura';
+var ID_CONTENIDO_INFORMACION        = 'ctl00_mainCopy_PnlDatos';
+var ID_TABLA_HORARIO_ACTUAL         = 'ctl00_mainCopy_GV_Horario';
+var ID_TABLA_HORARIO_ACTUAL2        = 'ctl00_mainCopy_GV_Horario2';
+var ID_CONTROL_PLAN_ESTUDIOS        = 'ctl00_mainCopy_dpdplan';
+var ID_CONTENEDOR_ELEMENTO          = 'ctl00_mainCopy_div';
+var ID_CONTROL_EVALUACION_TUTORES   = 'ctl00_mainCopy_Pnl_Evaluacion';
+var ID_CONTROL_CUESTIONARIO_TUTORES = 'ctl00_mainCopy_Pnl_Cuestionario';
 
 var ID_CONTENEDOR_CENTRAL   = 'contentwrapper';
 var ID_ACCESOS_RAPIDOS      = 'rightcolumn';
