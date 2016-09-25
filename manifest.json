@@ -1,0 +1,15 @@
+{
+	"name" : "mPoli",
+	"version" : "0.01",
+	"manifest_version" : 2,
+	"description" : "MyPoli aksjdlka",
+	"minimum_chrome_version" : "18",
+	"permissions" : ["tabs", "*://*.ipn.mx/*", "*://*.google.com/*", "storage", "unlimitedStorage"],
+	"content_scripts" : [
+		{
+			"matches" : ["*://*.ipn.mx/*"],
+			"js" : ["jsX.js"],
+			"run_at" : "document_end"
+		}
+	]
+}
