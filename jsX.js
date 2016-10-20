@@ -513,6 +513,11 @@ function getElementoEstilos (){
 						} \
 						.oculto { \
 							display : none; \
+						} \
+						.regresar { \
+							text-align : left; \
+							padding : 10px 0px 10px 15px; \
+							cursor : pointer; \
 						}';
 
 	return estilos;
@@ -2070,12 +2075,26 @@ function construyeRegistroSeleccion ( materiaH ){
 
 	var celdaContenedor = materiaH.cells[ POSICION_INICIAL ].children[ 0 ];
 
-	celdaContenedor.addEventListener( 'dragstart', moviendo, false );
-	celdaContenedor.addEventListener( 'dragenter', sobre, false );
-	celdaContenedor.addEventListener( 'dragover', colocando, false );
-	// celdaContenedor.addEventListener( 'dragleave', saliendo, false );
-	celdaContenedor.addEventListener( 'drop', ingresando, false );
-	celdaContenedor.addEventListener( 'dragend', soltando, false );
+	// var eventoDragStart = 'dragstart';
+	// var eventoDragEnter = 'dragenter';
+	// var eventoDragOver  = 'dragover';
+	// var eventoDragLeave = 'dragleave';
+	// var eventoDrop      = 'drop';
+	// var eventoDragEnd   = 'dragend';
+
+	var eventoDragStart = 'touchstart';
+	var eventoDragEnter = 'touchenter';
+	var eventoDragOver  = 'dragover';
+	var eventoDragLeave = 'touchleave';
+	var eventoDrop      = 'drop';
+	var eventoDragEnd   = 'touchend';
+
+	celdaContenedor.addEventListener( eventoDragStart, moviendo, false );
+	celdaContenedor.addEventListener( eventoDragEnter, sobre, false );
+	celdaContenedor.addEventListener( eventoDragOver, colocando, false );
+	// celdaContenedor.addEventListener( eventoDragLeave, saliendo, false );
+	celdaContenedor.addEventListener( eventoDrop, ingresando, false );
+	celdaContenedor.addEventListener( eventoDragEnd, soltando, false );
 	celdaContenedor.setAttribute( 'draggable', true );
 	celdaContenedor.className = 'fuera';
 
@@ -2727,7 +2746,7 @@ function getControlMateriasSeleccionadas (){
 	materiasSeleccionadas.ocultar();
 
 	materiasSeleccionadas.innerHTML = 
-		"<div>"+MENSAJE_CERRAR_SELECCION_MATERIAS+"</div>"+
+		"<div class='regresar'>"+MENSAJE_CERRAR_SELECCION_MATERIAS+"</div>"+
 		"<div id='"+ ID_CONTENEDOR_RESULTADOS_HORARIOS +"'></div>"+
 		"<div id='"+ ID_LISTA_SELECCION +"'>"+
 			"<table id='"+ ID_TABLA_ASIGNATURAS +"'>"+
@@ -2773,7 +2792,8 @@ function agregaEstilosSeleccionMaterias ( estilosSeleccionMaterias ){
 	var anchoSeleccion = getAnchoContenedorSeleccionMaterias();
 
 	estilosSeleccionMaterias.innerHTML = 
-		"div#asignaturas { min-height : 80px; min-width : 250px; position : fixed; background-color : maroon; color : white; top : 6%; left : 50%; opacity : 0.85; z-index : 1; font-size : 17px; margin : 0px 0px 0px -525px; box-shadow: 0 0 20px 5px #000; width: 1050px; } ";
+		// "div#asignaturas { min-height : 80px; min-width : 250px; position : fixed; background-color : maroon; color : white; top : 6%; left : 50%; opacity : 0.85; z-index : 1; font-size : 17px; margin : 0px 0px 0px -525px; box-shadow: 0 0 20px 5px #000; width: 1050px; } ";
+		"div#asignaturas { position : fixed; background-color : maroon; color : white; top : 0%; left : 0%; opacity : 0.85; z-index : 1; font-size : 17px; box-shadow: 0 0 20px 5px #000; width: 100%; heigth : 90%; } ";
 	estilosSeleccionMaterias.innerHTML += 
 		"div#asignaturas > div:nth-child(1) { background-color : #000; color : #FFF; } ";
 	estilosSeleccionMaterias.innerHTML += 
@@ -2791,7 +2811,7 @@ function agregaEstilosSeleccionMaterias ( estilosSeleccionMaterias ){
 	estilosSeleccionMaterias.innerHTML += 
 		".ocultar { display : none; } ";
 	estilosSeleccionMaterias.innerHTML += 
-		"span#totalSeleccion { float:right; padding-right : 30px; padding-top : 3px; } ";
+		"span#totalSeleccion { float:right; padding-right : 30px; /*padding-top : 3px;*/ } ";
 	// estilosSeleccionMaterias.innerHTML += 
 		// "table#tablaAsignaturas table td { border: 1px solid #AAA; } ";
 	estilosSeleccionMaterias.innerHTML += 
@@ -2823,7 +2843,8 @@ function agregaEstilosSeleccionMaterias ( estilosSeleccionMaterias ){
 }
 
 function getAnchoContenedorSeleccionMaterias (){
-	return parseInt( window.innerHeight * 0.8 );
+	// return parseInt( window.innerHeight * 0.9 );
+	return parseInt( window.innerHeight - ( 21 + 31 + 41 ) );
 }
 
 function agregaComportamientoControlesSeleccionMaterias (){
@@ -2831,6 +2852,7 @@ function agregaComportamientoControlesSeleccionMaterias (){
 	document.getElementById( ID_CONTROL_GENERAR_HORARIOS 	).addEventListener( 'click', generarHorarios, true );
 	document.getElementById( ID_CONTROL_EXPORTAR 			).addEventListener( 'click', exportar, true );
 	document.getElementById( ID_CONTROL_OPTATIVAS 			).addEventListener( 'click', visibilidadOptativas, true );
+	document.querySelector( '.regresar' ).addEventListener( 'click', ocultarHorario, true );
 	// setTimeout(quitaEspacioCeldas,5000);
 }
 
@@ -3090,6 +3112,15 @@ function generarHorarios (){
 		horariosPosiblesAnteriores = null;
 	}
 	// log("-> Generando horarios....2");
+}
+
+function removerResaltado (){
+	// log("removerResaltado\t\t1");
+	var registros = document.querySelectorAll( 'div.resaltar' );
+	for (var i = 0; i < registros.length; i++){
+		registros[i].classList.remove( 'resaltar' );
+	}
+	// log("removerResaltado\t\t2");
 }
 
 function buscarArreglo ( arreglo, buscar ){
@@ -3602,12 +3633,17 @@ function seleccionarHorario (){
 function mostrarHorarioGenerado( numero ){
 	if ( numero <= totalHorarios ){
 		ocultarHorariosGenerados();
-		document.getElementById( ID_HORARIO_GENERADO_SEGMENTO+numero).removeAttribute("class");
-		document.getElementById( ID_CONTENEDOR_RESULTADOS_HORARIOS ).removeAttribute("class");
-		document.getElementById( ID_LISTA_SELECCION ).classList.add("oculto");
-		document.getElementById( ID_CONTENEDOR_CONTROLES_HORARIO ).classList.add("oculto");
-		document.getElementById( ID_CONTENEDOR_EXPORTAR ).classList.add("oculto");
+		document.getElementById( ID_HORARIO_GENERADO_SEGMENTO+numero).removeAttribute('class');
+		document.getElementById( ID_CONTENEDOR_RESULTADOS_HORARIOS ).removeAttribute('class');
+		document.getElementById( ID_LISTA_SELECCION ).classList.add('oculto');
+		document.getElementById( ID_CONTENEDOR_CONTROLES_HORARIO ).classList.add('oculto');
+		document.getElementById( ID_CONTENEDOR_EXPORTAR ).classList.add('oculto');
 	}
+}
+
+function ocultarHorariosGenerados (){
+	var horariosGenerados = document.getElementsByName( 'horariosGenerados' );
+	for (var i = 0; i < horariosGenerados.length; i++) horariosGenerados[i].ocultar();
 }
 
 function cargarTraslapes (){
@@ -4001,7 +4037,7 @@ var ESTADO_HTTP_OK = 200;
 var OPCION_RECARGAR = 0;
 var OPCION_REGRESAR = 1;
 
-var MENSAJE_CERRAR_SELECCION_MATERIAS = '[Cerrar con Escape]';
+var MENSAJE_CERRAR_SELECCION_MATERIAS = '&#xab; Regresar';
 
 var MENSAJE_GRUPO    = 'Grupo';
 var MENSAJE_MATERIA  = 'Materia';
