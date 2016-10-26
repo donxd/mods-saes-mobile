@@ -3967,6 +3967,36 @@ function buscaIdentificador ( materia, materiasNombradas ){
 	return id;
 }
 
+function controlaAccesosApp (){
+	setTimeout( detectaIdentificacionAccesos, TIEMPO_VERIFICACION_IDENTIFICACION );
+}
+
+function detectaIdentificacionAccesos (){
+	var usuario = getElemento( SELECTOR_USUARIO_IDENTIFICACION );
+
+	if ( usuario != null ){
+		ocultaAccesosApp();
+	} else {
+		muestraAccesosApp();
+	}
+}
+
+function ocultaAccesosApp (){
+	try {
+		androidJs.ocultaAccesosRapidos();
+	} catch ( error ){
+		log( 'No pudo ocultar los accesos' );
+	}
+}
+
+function muestraAccesosApp (){
+	try {
+		androidJs.muestraAccesosRapidos();
+	} catch ( error ){
+		log( 'No pudo mostrar los accesos' );
+	}
+}
+
 var IDENTIFICACION_USUARIO  = 'usuario';
 var IDENTIFICACION_PASSWORD = 'password';
 
@@ -4141,6 +4171,7 @@ var POSICION_INICIO_REGISTROS      = 1;
 var POSICION_INICIO_NOMBRE_PLANTEL = 9;
 
 var TIEMPO_ACTUALIZACION_REINSCRIBIR = 500;
+var TIEMPO_VERIFICACION_IDENTIFICACION = 1000;
 
 var ESPACIO_HTML = '&nbsp;';
 
@@ -4264,6 +4295,7 @@ function iniciar (){
 
 		ajustarDisenio();
 		detectaPantalla();
+		controlaAccesosApp();
 
 	} catch ( error ){
 		log( '@' + error );
