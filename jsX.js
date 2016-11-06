@@ -12,6 +12,10 @@ HTMLElement.prototype.ocultar = function (){
 	this.classList.add( 'oculto' );
 }
 
+HTMLElement.prototype.mostrar = function (){
+	this.classList.remove( 'oculto' );
+}
+
 function ajustarDisenio (){
 	ajustaEstructuraPagina();
 	ajustaMenu();
@@ -75,15 +79,9 @@ function eliminaElemento ( selectorElemento ){
 
 function pegarElemento ( elemento, selectorDestino, posicion ){
 	switch ( posicion ){
-		case DENTRO_DE:
-			pegaElementoDentro( elemento, selectorDestino );
-			break;
-		case ANTES_DE:
-			pegaElementoAntes( elemento, selectorDestino );
-			break;
-		case DESPUES_DE:
-			pegaElementoDespues( elemento, selectorDestino );
-			break;
+		case DENTRO_DE  : pegaElementoDentro( elemento, selectorDestino ); break;
+		case ANTES_DE   : pegaElementoAntes( elemento, selectorDestino ); break;
+		case DESPUES_DE : pegaElementoDespues( elemento, selectorDestino ); break;
 	}
 }
 
@@ -132,7 +130,7 @@ function agregaEstilosSecciones (){
 	getElementos( SELECTOR_ACCESOS_RAPIDOS ).forEach( function ( elemento ){
 		elemento.style.verticalAlign = 'top';
 	});
-	
+
 	getElementos( SELECTOR_CONTENEDOR ).forEach( function ( elemento ){
 		elemento.removeAttribute( 'style' );
 	});
@@ -188,7 +186,7 @@ function ajustaEspacioNavegacion (){
 
 function getEstiloNavegacion ( menuSecciones ){
 	return 'padding: 0 '
-			+ menuSecciones.clientWidth 
+			+ menuSecciones.clientWidth
 			+'px; border-bottom: 1px solid #FFF; border-top: 1px solid #990000; background-color: #F2F2F2;';
 }
 
@@ -222,7 +220,7 @@ function ajustaMenu (){
 function ajustaEnlaces (){
 	getElementos( 'a:not([href=""])' ).forEach( function ( elemento ){
 	// getElementos( 'a' ).forEach( function ( elemento ){
-		if ( elemento != null && 
+		if ( elemento != null &&
 				elemento.getAttribute( 'href' ) != null && elemento.getAttribute( 'href' ).length > 0 ){
 
 			// elemento.setAttribute( 'style', 'color : #0F0 !important;' );
@@ -796,7 +794,7 @@ function actualizaOcupabilidad2 (){
 
 function insertarControlExportarImportar ( controlesBuscador ){
 	controlesBuscador
-		.innerHTML += 
+		.innerHTML +=
 			"<input type='button' id='" + ID_CONTROL_EXPIMP + "' value='" + CONTROL_IMPORTAR + "' title='" + MENSAJE_IMPORTAR + "'/>"+
 			"<div id='" + ID_CONTENEDOR_EXPORTAR + "'>"+
 				"<input id='" + ID_CONTROL_IMPORTACION + "' type = 'file'/>"+
@@ -1161,11 +1159,11 @@ function informacionHistorico (){
 						elemento.rows[ j ].cells[ 4 ].innerHTML + "','" +
 						elemento.rows[ j ].cells[ 5 ].innerHTML + "'\n";
 				} else {
-					salidaInformacionHistorico += "'"+ 
-						elemento.rows[ j ].cells[ 0 ].innerHTML + "','" + 
-						elemento.rows[ j ].cells[ 1 ].innerHTML + "','" + 
-						elemento.rows[ j ].cells[ 2 ].innerHTML + "','" + 
-						elemento.rows[ j ].cells[ 3 ].innerHTML + "','" + 
+					salidaInformacionHistorico += "'"+
+						elemento.rows[ j ].cells[ 0 ].innerHTML + "','" +
+						elemento.rows[ j ].cells[ 1 ].innerHTML + "','" +
+						elemento.rows[ j ].cells[ 2 ].innerHTML + "','" +
+						elemento.rows[ j ].cells[ 3 ].innerHTML + "','" +
 						elemento.rows[ j ].cells[ 4 ].innerHTML + "'\n";
 				}
 
@@ -1308,7 +1306,7 @@ function conexionDiccionario (){
 		case 'esiqie':
 		case 'esit':
 		case 'upiig':
-			destinoConexion = 'http://diccionariodemaestros.com/' + plantel;
+			destinoConexion = 'http://diccionariodemaestros.com/' + plantel +'/';
 			break;
 		case 'upiicsa':
 			destinoConexion = 'http://foroupiicsa.net/diccionario/';
@@ -1322,7 +1320,7 @@ function conexionDiccionario (){
 function getNombrePlantelPagina (){
 	var direccionPagina = location.host;
 
-	return direccionPagina.substring( 
+	return direccionPagina.substring(
 		  POSICION_INICIO_NOMBRE_PLANTEL
 		, direccionPagina.lastIndexOf( '.ipn' )
 	);
@@ -1350,7 +1348,7 @@ function getControlComentarioRapido (){
 	controlComentarioRapido.setAttribute( 'method' , 'POST' );
 
 	controlComentarioRapido
-		.innerHTML = 
+		.innerHTML =
 			'<input type="hidden" name="profesor" id="' + ID_COMENTARIO_PROFESOR + '" />' +
 			'<input type="hidden" name="materia" id="' + ID_COMENTARIO_MATERIA + '" />';
 
@@ -1397,7 +1395,7 @@ function getNombreProfesor ( registro ){
 }
 
 function validaNombreProfesor ( nombreProfesor ){
-	return nombreProfesor.length > 0 && 
+	return nombreProfesor.length > 0 &&
 						nombreProfesor != ESPACIO_HTML
 }
 
@@ -1555,7 +1553,7 @@ function procesaRespuestaCreacionHorario (){
 }
 
 function validaRespuestaPeticion ( peticion ){
-	return peticion.readyState == READY_STATE_COMPLETE && 
+	return peticion.readyState == READY_STATE_COMPLETE &&
 					peticion.status == ESTADO_HTTP_OK;
 }
 
@@ -1685,7 +1683,7 @@ function cuentaMateriasInscripcion (){
 
 	var materiasPorInscribir = document.getElementById( ID_TABLA_HORARIO_ACTUAL );
 	var numeroMaterias = materiasPorInscribir.rows.length - 1;
-	if ( numeroMaterias == 1 && 
+	if ( numeroMaterias == 1 &&
 			materiasPorInscribir.rows[ 1 ].cells[ COLUMNA_AJUSTAR_NOMBRE_1 ].innerHTML == ESPACIO_HTML ){
 
 		numeroMaterias = 0;
@@ -1884,7 +1882,7 @@ function cambiarEstadoSeleccion (){
 
 	for ( var i = 0; i < n; i++ ){
 
-		if ( materiasHorario.materias[ i ].grupo == grupo && 
+		if ( materiasHorario.materias[ i ].grupo == grupo &&
 			 materiasHorario.materias[ i ].materia == materia ){
 
 			materiasHorario.materias[ i ].estado = this.checked;
@@ -1913,7 +1911,7 @@ function agregaRegistroSeleccion ( registroSeleccionado, numero ){
 
 	var dias = getDiasSemana();
 	var horasSeguimiento = new Array(); //horas combinación
-	
+
 	// var horas,rango;
 	// var j, n, celdaInicioHorario = 5, horaDeInicioHorario = 7;
 
@@ -2024,7 +2022,7 @@ function agregaRegistroSeleccion ( registroSeleccionado, numero ){
 	var estadoMateria = getControlEstadoMateria();
 	materiaH.cells[ NUMERO_CELDAS-1 ].appendChild( estadoMateria );
 
-	if ( destinoConexion != '' ){ 
+	if ( destinoConexion != '' ){
 		var enlaceDiccionario = getEnlaceDiccionario( asignaturaH );
 		materiaH.cells[ 2 ].appendChild( enlaceDiccionario );
 	} else {
@@ -2077,7 +2075,7 @@ function construyeRegistroSeleccion ( materiaH ){
 	materiaH.cells[ POSICION_INICIAL ].setAttribute( 'colspan', cantidadCeldas );
 
 	materiaH.cells[ POSICION_INICIAL ]
-		.innerHTML = 
+		.innerHTML =
 			"<div name='"+ NOMBRE_CONTENEDOR_REGISTROS +"'><table><tr name='"+ NOMBRE_REGISTRO +"'></tr></table></div>";
 
 	var celdaContenedor = materiaH.cells[ POSICION_INICIAL ].children[ 0 ];
@@ -2172,10 +2170,10 @@ function ingresando ( evento ){
 			for ( i = posicionRegistroSeleccionado; i > posicionCambio; i-- ){
 
 				for ( j = inicio; j < fin; j++ ){
-					registros[ i ].children[ 0 ].rows[ 0 ].cells[ j ].innerHTML = 
+					registros[ i ].children[ 0 ].rows[ 0 ].cells[ j ].innerHTML =
 						registros[ i-1 ].children[ 0 ].rows[ 0 ].cells[ j ].innerHTML;
 				}
-				registros[ i ].children[ 0 ].rows[ 0 ].cells[ check ].children[ 0 ].checked = 
+				registros[ i ].children[ 0 ].rows[ 0 ].cells[ check ].children[ 0 ].checked =
 					registros[ i-1 ].children[ 0 ].rows[ 0 ].cells[ check ].children[ 0 ].checked;
 			}
 
@@ -2185,10 +2183,10 @@ function ingresando ( evento ){
 
 				// console.log(i+"/"+posicionCambio+":"+registros.length);
 				for ( j = inicio; j < fin; j++ ){
-					registros[ i ].children[ 0 ].rows[ 0 ].cells[ j ].innerHTML = 
+					registros[ i ].children[ 0 ].rows[ 0 ].cells[ j ].innerHTML =
 						registros[ i+1 ].children[ 0 ].rows[ 0 ].cells[ j ].innerHTML;
 				}
-				registros[ i ].children[ 0 ].rows[ 0 ].cells[ check ].children[ 0 ].checked = 
+				registros[ i ].children[ 0 ].rows[ 0 ].cells[ check ].children[ 0 ].checked =
 					registros[ i+1 ].children[ 0 ].rows[ 0 ].cells[ check ].children[ 0 ].checked;
 			}
 		}
@@ -2197,7 +2195,7 @@ function ingresando ( evento ){
 			registros[ i ].children[ 0 ].rows[ 0 ].cells[ j ].innerHTML = temp.cells[ j ].innerHTML;
 		}
 
-		registros[ i ].children[ 0 ].rows[ 0 ].cells[ check ].children[ 0 ].checked = 
+		registros[ i ].children[ 0 ].rows[ 0 ].cells[ check ].children[ 0 ].checked =
 			temp.cells[ check ].children[ 0 ].checked;
 
 		//remarcar los resaltados
@@ -2231,7 +2229,7 @@ function actualizaMaterias (){
 			var registroSeleccion = materiasSeleccion[ i ].children[ 0 ].rows[ 0 ];
 			var registroAlmacenado = materiasHorario.materias[ j ];
 
-			if ( registroSeleccion.cells[ 0 ].innerHTML == registroAlmacenado.grupo && 
+			if ( registroSeleccion.cells[ 0 ].innerHTML == registroAlmacenado.grupo &&
 					registroSeleccion.cells[ 1 ].innerHTML == registroAlmacenado.materia ){
 
 				materiasOrdenadas.push( registroAlmacenado );
@@ -2271,11 +2269,26 @@ function getEnlaceDiccionario ( asignaturaH ){
 	return enlaceDiccionario;
 }
 
-function enlaceVerComentarios (){
-	document.getElementsByName( 'n' )[0].value = this.innerHTML;
-	document.getElementById( ID_CONTROL_COMENTARIO_RAPIDO ).submit();
-	estadoSeleccion = false;
-	setTimeout( 'estadoSeleccion = true;', UN_SEGUNDO );
+function enlaceVerComentarios ( evento ){
+	evento.stopPropagation();
+	try {
+
+
+		var paginaReferencia = getPaginaReferencia( this.innerHTML );
+		androidJs.verComentario( paginaReferencia );
+
+	} catch ( error ){
+		log( error );
+
+		document.getElementsByName( 'n' )[0].value = this.innerHTML;
+		document.getElementById( ID_CONTROL_COMENTARIO_RAPIDO ).submit();
+		estadoSeleccion = false;
+		setTimeout( 'estadoSeleccion = true;', UN_SEGUNDO );
+	}
+}
+
+function getPaginaReferencia ( seleccion ){
+	return document.getElementById( ID_CONTROL_COMENTARIO_RAPIDO ).action + '?sec=buscar&n='+ encodeURI( seleccion );
 }
 
 function getInformacionRegistro ( tablaRegistros, controlSeleccion ){
@@ -2300,7 +2313,7 @@ function calculaHorasSeguimiento ( horasSeguimiento, tabla, grupo, nombre, dias 
 }
 
 function registroGrupoNombreIguales ( grupo, nombre, registro ){
-	return grupo == registro.cells[ 0 ].innerHTML && 
+	return grupo == registro.cells[ 0 ].innerHTML &&
 				nombre == registro.cells[ 1 ].innerText;
 }
 
@@ -2345,7 +2358,7 @@ function calculaRango ( valorCelda, cambioDia ){
 	var rango = new Array();
 	var horas = getHorasRegistro( valorCelda );
 
-	creaRango( rango, horas );
+	rango = creaRango( rango, horas );
 	vaciaRango( rango, cambioDia );
 
 	return rango;
@@ -2373,6 +2386,8 @@ function creaRango ( rango, horas ){
 
 		rango[ n ] -= HORA_DE_INICIO_HORARIO;
 	}
+
+	return rango;
 }
 
 function vaciaRango ( rango, cambioDia ){
@@ -2452,11 +2467,19 @@ function seleccionAgregar ( controlSeleccion ){
 }
 
 function agregarOptativa ( materia ){
-	var listaOptativas = JSON.parse( localStorage.optativas );
+	var listaOptativas = getAlmacenamientoOptativas();
 
 	if ( !optativaRepetida( listaOptativas, materia ) ){
 		almacenarOptativa( listaOptativas, materia );
 	}
+}
+
+function getAlmacenamientoOptativas (){
+	if ( localStorage.optativas == null || localStorage.optativas == '' ){
+		localStorage.optativas = "[]";
+	}
+
+	return JSON.parse( localStorage.optativas );
 }
 
 function optativaRepetida ( listaOptativas, materia ){
@@ -2524,7 +2547,7 @@ function insertaControlOptativa ( checkOptativa, tablaOptativas, posicionFila, n
 }
 
 function eliminarRegistroSeleccion ( registroSeleccionado ){
-	eliminaMateriaSeleccion( 
+	eliminaMateriaSeleccion(
 		  registroSeleccionado.grupo
 		, registroSeleccionado.nombre
 		, POSICION_INICIO_REGISTROS
@@ -2560,7 +2583,7 @@ function eliminaRegistroSeleccion ( grupo, materia, tablaSeleccion, registros, p
 	//comprobar si funciona para elementos separados
 	for (var i = 0; i < registros.rows.length; i++){
 		// log("----"+materia+" | "+registros.rows[i].cells[1].innerText);
-		if ( grupo == registros.rows[ i ].cells[ 0 ].innerHTML && 
+		if ( grupo == registros.rows[ i ].cells[ 0 ].innerHTML &&
 				materia == registros.rows[i].cells[ 1 ].innerText ){
 
 			registros.rows[ i ].cells[ posicionCheck ].firstChild.checked = false;
@@ -2570,7 +2593,7 @@ function eliminaRegistroSeleccion ( grupo, materia, tablaSeleccion, registros, p
 	//quitando de la lista de la selección
 	var materiasSeleccion = document.querySelectorAll( SELECTOR_MATERIAS_SELECCIONADAS );
 	for (var i = 0; i < materiasSeleccion.length; i++){
-		if ( grupo == materiasSeleccion[ i ].children[ 0 ].rows[ 0 ].cells[ 0 ].innerHTML && 
+		if ( grupo == materiasSeleccion[ i ].children[ 0 ].rows[ 0 ].cells[ 0 ].innerHTML &&
 				materia == materiasSeleccion[ i ].children[ 0 ].rows[ 0 ].cells[ 1 ].innerHTML ){
 
 			// materiasSeleccion.deleteRow(i);
@@ -2583,12 +2606,12 @@ function eliminaRegistroSeleccion ( grupo, materia, tablaSeleccion, registros, p
 function eliminaSeleccion ( grupo, materia, tablaSeleccion, registros, posicion, posicionCheck ){
 	//quitando de la lista de la selección
 	tablaSeleccion.deleteRow( posicion );
-	
+
 	//deseleccionando las materias del mismo grupo en los registros
 	// for (var i = 1; i < registros.rows.length; i++){
 	for ( i = POSICION_INICIO_REGISTROS; i < registros.rows.length; i++ ){
 		// if (registros.rows[i].cells[0].innerHTML == grupo && (registros.rows[i].cells[1].innerHTML == materia || (destinoConexion != "" && registros.rows[i].cells[1].firstChild.innerHTML == materia) )){
-		if ( registros.rows[ i ].cells[ 0 ].innerHTML == grupo && 
+		if ( registros.rows[ i ].cells[ 0 ].innerHTML == grupo &&
 						registros.rows[ i ].cells[ 1 ].innerText == materia ){
 
 			registros.rows[ i ].cells[ posicionCheck ].firstChild.checked = false;
@@ -2647,7 +2670,7 @@ function materiasHorarioConMasDeUnElemento (){
 function remueveAsignaturaSeleccionAlmacenada ( grupo, nombre ){
 	for ( var i = 0; i < materiasHorario.materias.length; i++ ){
 
-		if ( materiasHorario.materias[i].grupo == grupo && 
+		if ( materiasHorario.materias[i].grupo == grupo &&
 						materiasHorario.materias[i].materia == nombre ){
 
 			if ( i > parseInt( materiasHorario.materias.length/2 ) ){
@@ -2672,8 +2695,8 @@ function remueveAsignaturaSeleccionAlmacenada ( grupo, nombre ){
 }
 
 function cargarMateriasHorarioGuardadas (){
-	if ( localStorage.horarioMaterias != null && 
-			localStorage.horarioMaterias != '' && 
+	if ( localStorage.horarioMaterias != null &&
+			localStorage.horarioMaterias != '' &&
 				localStorage.horarioMaterias != 'null' ){
 
 		materiasHorario = JSON.parse( localStorage.horarioMaterias );
@@ -2726,9 +2749,9 @@ function agregaTamanioCeldasSeleccionMaterias ( estilosSeleccionMaterias ){
 	var medidasCeldas = medidasCeldasSeleccion();
 
 	for ( var j = 0; j < medidasCeldas.length; j++ ) {
-		estilosSeleccionMaterias.innerHTML += 
+		estilosSeleccionMaterias.innerHTML +=
 			"table#tablaAsignaturas > tbody > tr:nth-child(1) > td:nth-child(" + (j+1) + "), "+
-			"table#tablaAsignaturas table td:nth-child(" + (j+1) + ") " + 
+			"table#tablaAsignaturas table td:nth-child(" + (j+1) + ") " +
 				"{ width : " + ( medidasCeldas[ j ]-4 ) + "px; } ";
 	}
 }
@@ -2752,7 +2775,7 @@ function getControlMateriasSeleccionadas (){
 	materiasSeleccionadas.id  = ID_CONTENEDOR_MATERIAS_SELECCIONADAS;
 	materiasSeleccionadas.ocultar();
 
-	materiasSeleccionadas.innerHTML = 
+	materiasSeleccionadas.innerHTML =
 		"<div class='regresar'>"+MENSAJE_CERRAR_SELECCION_MATERIAS+"</div>"+
 		"<div id='"+ ID_CONTENEDOR_RESULTADOS_HORARIOS +"'></div>"+
 		"<div id='"+ ID_LISTA_SELECCION +"'>"+
@@ -2798,79 +2821,79 @@ function agregaEstilosSeleccionMaterias ( estilosSeleccionMaterias ){
 
 	var anchoSeleccion = getAnchoContenedorSeleccionMaterias();
 
-	estilosSeleccionMaterias.innerHTML = 
+	estilosSeleccionMaterias.innerHTML =
 		// 'div#asignaturas { min-height : 80px; min-width : 250px; position : fixed; background-color : maroon; color : white; top : 6%; left : 50%; opacity : 0.85; z-index : 1; font-size : 17px; margin : 0px 0px 0px -525px; box-shadow: 0 0 20px 5px #000; width: 1050px; } ';
 		'div#asignaturas { position : fixed; background-color : maroon; color : white; top : 0%; left : 0%; opacity : 0.85; z-index : 1; font-size : 17px; box-shadow: 0 0 20px 5px #000; width: 100%; heigth : 90%; } ';
-	estilosSeleccionMaterias.innerHTML += 
+	estilosSeleccionMaterias.innerHTML +=
 		'div#asignaturas > div:nth-child(1) { background-color : #000; color : #FFF; } ';
-	estilosSeleccionMaterias.innerHTML += 
+	estilosSeleccionMaterias.innerHTML +=
 		'div#resultadoHorarios { overflow-y : auto; max-height : '+anchoSeleccion+'px; } ';
-	estilosSeleccionMaterias.innerHTML += 
+	estilosSeleccionMaterias.innerHTML +=
 		'div#asignaturasSeleccionadas { overflow-y:auto; max-height: '+anchoSeleccion+'px; } ';
-	estilosSeleccionMaterias.innerHTML += 
+	estilosSeleccionMaterias.innerHTML +=
 		'div#asignaturasSeleccionadas > table { width:100%; } ';
-	estilosSeleccionMaterias.innerHTML += 
+	estilosSeleccionMaterias.innerHTML +=
 		"table#tablaAsignaturas > tbody > tr:nth-child(1), "+
 		"table[name='traslapes'] > tbody > tr:nth-child(1), "+
 		"table#tablaOptativas tr:nth-child(1) { background-color : #F90; color : #FFF; } ";
-	// estilosSeleccionMaterias.innerHTML += 
+	// estilosSeleccionMaterias.innerHTML +=
 		// "table.traslapes tr:not(.titulos) td { border : 1px solid #FFF } ";
-	estilosSeleccionMaterias.innerHTML += 
+	estilosSeleccionMaterias.innerHTML +=
 		"table[name='traslapes'] td, "+
 		'div#informacionOptativas td { border : 1px solid #FFF; } ';
-	estilosSeleccionMaterias.innerHTML += 
+	estilosSeleccionMaterias.innerHTML +=
 		"table[name='traslapes'], "+
 		'table#tablaOptativas { border-collapse : collapse; } ';
-	estilosSeleccionMaterias.innerHTML += 
+	estilosSeleccionMaterias.innerHTML +=
 		'.ocultar { display : none; } ';
-	estilosSeleccionMaterias.innerHTML += 
+	estilosSeleccionMaterias.innerHTML +=
 		'span#totalSeleccion { float:right; padding-right : 30px; /*padding-top : 3px;*/ } ';
-	// estilosSeleccionMaterias.innerHTML += 
+	// estilosSeleccionMaterias.innerHTML +=
 		// 'table#tablaAsignaturas table td { border: 1px solid #AAA; } ';
-	estilosSeleccionMaterias.innerHTML += 
+	estilosSeleccionMaterias.innerHTML +=
 		'table#tablaAsignaturas td, th { padding : 0px 0px } ';
-	estilosSeleccionMaterias.innerHTML += 
+	estilosSeleccionMaterias.innerHTML +=
 		"div[name='contenedorRegistro'] { cursor : pointer; } ";
-	estilosSeleccionMaterias.innerHTML += 
+	estilosSeleccionMaterias.innerHTML +=
 		"div[name='contenedorRegistro'] > table { width : 100% } ";
-	estilosSeleccionMaterias.innerHTML += 
+	estilosSeleccionMaterias.innerHTML +=
 		'div#exportar { width : 560px; background-color : #DADADA; text-align : left; padding : 5px 20px 5px 20px; } ';
-	estilosSeleccionMaterias.innerHTML += 
+	estilosSeleccionMaterias.innerHTML +=
 		'span.importar { text-decoration : underline; font-weight : bold; text-transform : uppercase; } ';
-	estilosSeleccionMaterias.innerHTML += 
+	estilosSeleccionMaterias.innerHTML +=
 		'[draggable] { -webkit-user-select : none; -webkit-user-drag: element; } ';
-	estilosSeleccionMaterias.innerHTML += 
+	estilosSeleccionMaterias.innerHTML +=
 		'.sobre { border : 2px dashed #FFF; } ';
-	estilosSeleccionMaterias.innerHTML += 
+	estilosSeleccionMaterias.innerHTML +=
 		'.sobreImportar { border : 2px dashed #000; } ';
-	estilosSeleccionMaterias.innerHTML += 
+	estilosSeleccionMaterias.innerHTML +=
 		'.fuera { border : 2px solid #800000; } ';
-	estilosSeleccionMaterias.innerHTML += 
+	estilosSeleccionMaterias.innerHTML +=
 		'.fueraImportar { border : 1px solid #000; } ';
-	estilosSeleccionMaterias.innerHTML += 
+	estilosSeleccionMaterias.innerHTML +=
 		'.seleccionado { background-color : rgba(122, 196, 41, 0.53); } ';
 	estilosSeleccionMaterias.innerHTML +=
 		'div.tabla { display : table; width : 100%; } ';
 	estilosSeleccionMaterias.innerHTML +=
 		'div.celda { display : table-cell; vertical-align : middle; } ';
-	estilosSeleccionMaterias.innerHTML += 
+	estilosSeleccionMaterias.innerHTML +=
 		"div.resaltar { border : 1px solid #FFF; background-color : #154215; } ";
-	estilosSeleccionMaterias.innerHTML += 
+	estilosSeleccionMaterias.innerHTML +=
 		"div#informacionOptativas { text-align : center; } ";
-	estilosSeleccionMaterias.innerHTML += 
+	estilosSeleccionMaterias.innerHTML +=
 		"div#detalleTraslapes table, "+
 		"table#tablaOptativas { margin : 0px auto; } ";
-	estilosSeleccionMaterias.innerHTML += 
+	estilosSeleccionMaterias.innerHTML +=
 		"div#controlesHorarios, "+
 		"div#informacionHorarios { background-color : #000 } ";
-	estilosSeleccionMaterias.innerHTML += 
+	estilosSeleccionMaterias.innerHTML +=
 		".tooltip { display : inline; position : relative; } ";
-	estilosSeleccionMaterias.innerHTML += 
+	estilosSeleccionMaterias.innerHTML +=
 		".tooltip:hover:after { background : rgba(0,0,0,.75); border-radius : 5px; bottom : 26px; color : #FFF; content : attr(title); font-size : 14px; text-aling : justify; left : 20%; padding : 5px 15px; position : absolute; z-index : 98; width : 220px; } ";
-	estilosSeleccionMaterias.innerHTML += 
+	estilosSeleccionMaterias.innerHTML +=
 		".tooltip:hover:before { border : solid; border-color : #000 transparent; border-width : 6px 6px 0 6px; bottom : 20px; content : ''; left : 50%; position : absolute; z-index : 99; } ";
-	estilosSeleccionMaterias.innerHTML += 
-		".titulo_tabla { color : #FF9900; text-transform : uppercase; } "; 
+	estilosSeleccionMaterias.innerHTML +=
+		".titulo_tabla { color : #FF9900; text-transform : uppercase; } ";
 }
 
 function getAnchoContenedorSeleccionMaterias (){
@@ -3041,14 +3064,14 @@ function generarHorarios (){
 				for (var j = 0; j < horariosPosiblesAnteriores.combinacion.length; j++){
 					//alert("->"+j);
 					// alert("- ->"+gruposOrdenados.materias[i].grupos.length);
-					
+
 					var combinacion = { secuencia : horariosPosiblesAnteriores.combinacion[j].secuencia, horas : horariosPosiblesAnteriores.combinacion[j].horas };
 					for (var n = 0; n < gruposOrdenados.materias[i].grupos.length; n++){
 						//alert("-->"+n);
 						var encontrado = false;
 						// combinacion.horas = horariosPosiblesAnteriores.combinacion[j].horas;
 						// combinacion.secuencia = horariosPosiblesAnteriores.combinacion[j].secuencia;
-						
+
 						// alert(combinacion.horas+"###"+gruposOrdenados.materias[i].grupos[n].horas);
 						// alert(i+" , "+n);
 						var posicionTraslape = gruposOrdenados.materias[i].grupos[n].horas.length;
@@ -3130,7 +3153,7 @@ function generarHorarios (){
 		}
 		// alert("Listo");
 		// log("-> Generando horarios....1.3");
-		if (combinacionesDisponibles && horariosPosiblesAnteriores.combinacion.length > 0){
+		if ( combinacionesDisponibles && horariosPosiblesAnteriores.combinacion.length > 0 ){
 			// log("-> Generando horarios....1.3.1");
 			localStorage.resultados = JSON.stringify(horariosPosiblesAnteriores);
 			presentarHorariosGenerados(horariosPosiblesAnteriores,gruposOrdenados);
@@ -3139,7 +3162,7 @@ function generarHorarios (){
 			document.getElementById( ID_CONTENEDOR_INFORMACION_HORARIOS ).innerHTML = MENSAJE_SIN_RESULTADOS;
 			cargarMateriasHorarioGuardadas();
 		}
-		informeTraslapes(traslapes, gruposOrdenados);
+		informeTraslapes( traslapes, gruposOrdenados );
 		horariosPosiblesAnteriores = null;
 	}
 	// log("-> Generando horarios....2");
@@ -3176,7 +3199,7 @@ function buscarArregloOrdenadoBinario ( arreglo, buscar ){
 	var encontrado = false;
 	var pos = -1;
 	while (k != 0){
-		if (buscar != arreglo[n]){					
+		if (buscar != arreglo[n]){
 			k = parseInt((n-i)/2);
 			if (buscar > arreglo[n]){
 				if (k != 1){
@@ -3226,7 +3249,7 @@ function buscarArregloOrdenado ( arreglo, buscar, version ){
 	var inicio = 0;
 	var n;
 	var fin = arreglo.length - 1;
- 
+
 	while (inicio <= fin) {
 		n = (inicio + fin) / 2;
 		// console.log(buscar+"/"+arreglo[Math.round(n)]+" : "+Math.round(n));
@@ -3268,7 +3291,7 @@ function exportar (){
 	// 		// setTimeout(function () { document.removeChild(link); }, 10);
 	// 		setTimeout(eliminaEnlace, 10);
 	// 	}
-	// });	
+	// });
 }
 
 function visibilidadOptativas (){
@@ -3284,8 +3307,8 @@ function visibilidadOptativas (){
 }
 
 function cargarMateriasHorario (){
-	if ( localStorage.horarioMaterias != null && 
-			localStorage.horarioMaterias != '' && 
+	if ( localStorage.horarioMaterias != null &&
+			localStorage.horarioMaterias != '' &&
 				localStorage.horarioMaterias != 'null' ){
 
 		materiasHorario = JSON.parse( localStorage.horarioMaterias );
@@ -3330,7 +3353,7 @@ function cargarMateriasHorario (){
 
 			var estadoMateria = getControlEstadoMateriaSeleccionInstancia( estadoMaterias );
 
-			if ( materiaSeleccionada.estado == undefined || 
+			if ( materiaSeleccionada.estado == undefined ||
 					materiaSeleccionada.estado != false ){
 
 				estadoMateria.checked = true;
@@ -3370,7 +3393,7 @@ function getControlEstadoMateriaSeleccion (){
 }
 
 function getEnlaceComentarioProfesor ( nombreProfesor ){
-	return "<a href='#' name='diccionario' style='color:#F90;' title='"+ MENSAJE_VER_COMENTARIOS +"' class='tooltip'>"+ 
+	return "<a href='#' name='diccionario' style='color:#F90;' title='"+ MENSAJE_VER_COMENTARIOS +"' class='tooltip'>"+
 				nombreProfesor +
 			"</a>";
 }
@@ -3401,20 +3424,20 @@ function getControlEstadoMateriaSeleccionInstancia ( estadoMaterias ){
 }
 
 function getVariablesControlMateria ( materiaHorario ){
-	return { 
-		materia : materiaHorario.materia, 
-		profe   : materiaHorario.profe, 
-		grupo   : materiaHorario.grupo, 
-		horas   : materiaHorario.horas, 
-		dias    : materiaHorario.dias, 
-		estado  : true 
+	return {
+		materia : materiaHorario.materia,
+		profe   : materiaHorario.profe,
+		grupo   : materiaHorario.grupo,
+		horas   : materiaHorario.horas,
+		dias    : materiaHorario.dias,
+		estado  : true
 	};
 }
 
 function activaSeleccionMateriaAlmacenada ( tabla, materiaHorario, posicionCheck ){
 	for ( var j = POSICION_INICIO_REGISTROS; j < tabla.rows.length; j++ ){
 
-		if ( materiaHorario.grupo == tabla.rows[ j ].cells[ 0 ].innerHTML && 
+		if ( materiaHorario.grupo == tabla.rows[ j ].cells[ 0 ].innerHTML &&
 				materiaHorario.materia == tabla.rows[ j ].cells[ 1 ].innerText ){
 
 			tabla.rows[ j ].cells[ posicionCheck ].firstChild.checked = true;
@@ -3441,7 +3464,7 @@ function vaciaGrupoMateriaContenedor ( materiaH, materiaSeleccionada ){
 
 function agregaControlDiccionario ( materiaH, materiaSeleccionada ){
 	var controlDiccionario = destinoConexion != '' ?
-								getEnlaceComentarioProfesor( materiaSeleccionada.profe ) : 
+								getEnlaceComentarioProfesor( materiaSeleccionada.profe ) :
 								materiaSeleccionada.profe;
 
 	materiaH.cells[ 2 ].innerHTML = controlDiccionario;
@@ -3591,9 +3614,9 @@ function creaEnlaceComentarioCelda ( celda ){
 }
 
 function getEnlaceComentario ( descripcion ){
-	return "<a href='#' name='"+ 
-				NOMBRE_ELEMENTOS_COMENTARIO_RAPIDO +"' title='"+ 
-				MENSAJE_VER_COMENTARIOS +"' class='tooltip'>"+ 
+	return "<a href='#' name='"+
+				NOMBRE_ELEMENTOS_COMENTARIO_RAPIDO +"' title='"+
+				MENSAJE_VER_COMENTARIOS +"' class='tooltip'>"+
 					descripcion +
 			"</a>";
 }
@@ -3609,126 +3632,159 @@ function cargarHorariosGenerados (){
 }
 
 function almacenamientoResultadosNoVacio (){
-	return localStorage.resultados != null && 
-				localStorage.resultados != '' && 
+	return localStorage.resultados != null &&
+				localStorage.resultados != '' &&
 					localStorage.resultados != 'null';
 }
 
 function almacenamientoArmadoOrdenado (){
-	return localStorage.armadoOrdenado != null && 
-				localStorage.armadoOrdenado != '' && 
+	return localStorage.armadoOrdenado != null &&
+				localStorage.armadoOrdenado != '' &&
 					localStorage.armadoOrdenado != 'null';
 }
 
 var totalHorarios = 0;
 function presentarHorariosGenerados ( horariosPosiblesAnteriores, gruposOrdenados ){
 	var nResultados = horariosPosiblesAnteriores.combinacion.length;
+	totalHorarios = parseInt( nResultados );
+
+	agregaControlesResultadosHorarios( nResultados );
+
+	horarioSeleccionado = 0;
+	agregaComportamientoControlSeleccionHorariosGenerado();
+	construyeHorariosGenerados( horariosPosiblesAnteriores, nResultados, gruposOrdenados );
+	ocultaControlesFlechas();
+	agregaControlVerTodosResultados();
+	agregaComportamientoControlVerTodosResultados();
+}
+
+function agregaControlesResultadosHorarios ( numeroResultados ){
+	var seleccionHorarios = getContenedorControlesResultadosHorarios( numeroResultados );
+	var informacion = getContenedorInformacionHorarios();
+
+	informacion.appendChild( seleccionHorarios );
+}
+
+function getContenedorControlesResultadosHorarios ( numeroResultados ){
+	var seleccionHorarios = document.createElement( 'table' );
+	seleccionHorarios
+		.innerHTML =
+			"<tr>"+
+				"<td>"+ MENSAJE_RESULTADOS_PARTE_1 + numeroResultados + MENSAJE_RESULTADOS_PARTE_2 +":</td>"+
+				"<td>"+
+					"<input id='"+ ID_CONTENEDOR_SELECCION_HORARIOS +"' type='number' min='0' max='"+ numeroResultados +"' value='0' size='4' title='"+ MENSAJE_VER_RESULTADO_N +"'/>"+
+				"</td>"+
+				"<td>"+MENSAJE_RESULTADOS_PARTE_3+"</td>"+
+			"</tr>";
+
+	seleccionHorarios.setAttribute( 'style', 'margin:0px auto;' );
+
+	return seleccionHorarios;
+}
+
+function ocultaControlesFlechas (){
+	var informacion = document.getElementById( ID_CONTENEDOR_INFORMACION_HORARIOS );
+
+	var contenedoresControlesHorariosGenerados = informacion.querySelectorAll( 'td' );
+
+	contenedoresControlesHorariosGenerados[ 1 ].ocultar();
+	contenedoresControlesHorariosGenerados[ 2 ].ocultar();
+}
+
+function agregaControlVerTodosResultados (){
+	var informacion = document.getElementById( ID_CONTENEDOR_INFORMACION_HORARIOS );
+	var contenedorControlesHorariosGenerados = informacion.querySelector( 'table' );
+	// var controlVerTodosResultados = getControlVerTodosResultados();
+
+	var posicionControl = contenedorControlesHorariosGenerados.rows[ 0 ].cells.length;
+	contenedorControlesHorariosGenerados.rows[ 0 ].insertCell( posicionControl );
+	contenedorControlesHorariosGenerados.rows[ 0 ].cells[ posicionControl ]
+		.innerHTML = '<input type="button" id="'+ ID_CONTROL_VER_TODOS_RESULTADOS +'" value="'+ MENSAJE_VER_TODOS_RESULTADOS +'">'
+}
+
+function agregaComportamientoControlVerTodosResultados (){
+	var control = document.getElementById( ID_CONTROL_VER_TODOS_RESULTADOS );
+	control.addEventListener( 'click', mostrarTodosResultados, true );
+}
+
+// function getControlVerTodosResultados (){
+// 	var control = document.createElement( 'input' );
+
+// 	control.type = 'button';
+// 	control.value = MENSAJE_VER_TODOS_RESULTADOS;
+// 	control.id = ID_CONTROL_VER_TODOS_RESULTADOS;
+// }
+
+function mostrarTodosResultados (){
+	var resultados = getElementos( SELECTOR_HORARIO_GENERADO );
+
+	if ( resultados.length > 0 ){
+
+		if ( listadoSeleccionAsignaturasOculto() ){
+
+			mostrarSeleccionMaterias();
+			cambiaMensajeVerTodosResultados();
+
+		} else {
+
+			resultados.forEach( function ( elemento ){
+				elemento.mostrar();
+			});
+
+			document.getElementById( ID_CONTENEDOR_RESULTADOS_HORARIOS ).mostrar();
+
+			ocultarListadoSeleccionAsignaturas();
+			cambiaMensajeOcultarTodosResultados();
+		}
+
+	}
+}
+
+function cambiaMensajeOcultarTodosResultados (){
+	var control = document.getElementById( ID_CONTROL_VER_TODOS_RESULTADOS );
+	control.value = MENSAJE_OCULTAR_TODOS_RESULTADOS;
+}
+
+function cambiaMensajeVerTodosResultados (){
+	var control = document.getElementById( ID_CONTROL_VER_TODOS_RESULTADOS );
+	control.value = MENSAJE_VER_TODOS_RESULTADOS;
+}
+
+function listadoSeleccionAsignaturasOculto (){
+	return document.getElementById( ID_CONTENEDOR_CONTROLES_HORARIO ).classList
+				.contains( 'oculto' );
+}
+
+function ocultarListadoSeleccionAsignaturas (){
+	document.getElementById( ID_LISTA_SELECCION ).ocultar();
+	document.getElementById( ID_CONTENEDOR_CONTROLES_HORARIO ).ocultar();
+	document.getElementById( ID_CONTENEDOR_EXPORTAR ).ocultar();
+}
+
+function getContenedorInformacionHorarios (){
 	var informacion = document.getElementById( ID_CONTENEDOR_INFORMACION_HORARIOS );
 	informacion.setAttribute( 'style', 'text-align:center;' );
 	// informacion.style = "text-aling:center;";
 	// informacion.innerHTML 	= "Hay "+nResultados+" resultados: ";
 
-	totalHorarios 				= parseInt(nResultados);
-	var seleccionHorarios 		= document.createElement( 'table' );
-	seleccionHorarios.innerHTML = 	"<tr>"+
-										"<td>"+ MENSAJE_RESULTADOS_PARTE_1 + nResultados + MENSAJE_RESULTADOS_PARTE_2 +":</td>"+
-										"<td>"+
-											"<input id='"+ ID_CONTENEDOR_SELECCION_HORARIOS +"' type='number' min='0' max='"+ nResultados +"' value='0' size='4' title='"+ MENSAJE_VER_RESULTADO_N +"'/>"+
-										"</td>"+
-										"<td>"+MENSAJE_RESULTADOS_PARTE_3+"</td>"+
-									"</tr>";
+	reseteaContenidoElemento( informacion );
 
-	seleccionHorarios.setAttribute( 'style', 'margin:0px auto;' );
+	return informacion;
+}
 
-	informacion.innerHTML = '';
-	informacion.appendChild( seleccionHorarios );
+function agregaComportamientoControlSeleccionHorariosGenerado (){
+	var seleccionHorarios = document.getElementById( ID_CONTENEDOR_SELECCION_HORARIOS );
 
-	horarioSeleccionado = 0;
-
-	seleccionHorarios = document.getElementById( ID_CONTENEDOR_SELECCION_HORARIOS );
 	seleccionHorarios.setAttribute( 'style','text-align:center;' );
 	seleccionHorarios.addEventListener( 'keyup', seleccionarHorario, true );
 	seleccionHorarios.addEventListener( 'change', seleccionarHorario, true );
-
-	// var seleccionMaterias 	= document.createElement("input");
-	// seleccionMaterias.type 	= "button";
-	// seleccionMaterias.value = "Inicio";
-	// seleccionMaterias.addEventListener("click",mostrarSeleccionMaterias,true);
-	// informacion.appendChild(seleccionMaterias);
-	
-	var tablaInformacion = document.createElement("table");
-	tablaInformacion.classList.add("oculto");
-	// tablaInformacion.style.display 	= "none";
-	// tablaInformacion.style.width 	= "100%";
-	tablaInformacion.innerHTML = "<tr style='background-color:#FF9900; color:white;'><td>"+ MENSAJE_GRUPO +"</td> <td>"+ MENSAJE_MATERIA +"</td> <td>"+ MENSAJE_PROFESOR +"</td> <td>"+ MENSAJE_LUNES +"</td> <td>"+ MENSAJE_MARTES +"</td> <td>"+ MENSAJE_MIERCOLES +"</td> <td>"+ MENSAJE_JUEVES +"</td> <td>"+ MENSAJE_VIERNES +"</td> <td>"+ MENSAJE_SABADO +"</td> </tr>";
-
-	for (var i = 0; i < horariosPosiblesAnteriores.combinacion[0].secuencia.length; i++){
-		tablaInformacion.insertRow(i+1);
-		for (var k = 0; k < 9; k++) tablaInformacion.rows[i+1].insertCell(k);
-		// tablaInformacion.rows[i+1].cells[1].innerHTML = gruposOrdenados.materias[i].materia;
-	}
-
-	cargarMateriasHorarioGuardadas();
-	var resultadoHorarios = document.getElementById( ID_CONTENEDOR_RESULTADOS_HORARIOS );
-	resultadoHorarios.innerHTML = '';
-	for (var n = 0; n < nResultados; n++){
-		// var boton 	= document.createElement("input");
-		// boton.type 	= "button";
-		// boton.value = (n+1);
-		// boton.addEventListener("click",mostrarHorarioGenerado,true);
-		// informacion.appendChild(boton);
-		var mostrarSabado = false;
-		var tablaInformacionN = tablaInformacion.cloneNode(true);
-		for (var i = 0; i < horariosPosiblesAnteriores.combinacion[n].secuencia.length; i++){
-			tablaInformacionN.rows[i+1].cells[0].innerHTML = gruposOrdenados.materias[i].grupos[horariosPosiblesAnteriores.combinacion[n].secuencia[i]].grupo;
-			if (gruposOrdenados.materias[i].materia == "optativa"){
-				tablaInformacionN.rows[i+1].cells[1].innerHTML = gruposOrdenados.materias[i].grupos[horariosPosiblesAnteriores.combinacion[n].secuencia[i]].materia;
-			} else {
-				tablaInformacionN.rows[i+1].cells[1].innerHTML = gruposOrdenados.materias[i].materia;
-			}
-			if (destinoConexion != ""){
-				var enlaceDiccionario = document.createElement("a");
-				enlaceDiccionario.href = "#";
-				enlaceDiccionario.setAttribute("style","color : #F90;");
-				enlaceDiccionario.innerHTML = gruposOrdenados.materias[i].grupos[horariosPosiblesAnteriores.combinacion[n].secuencia[i]].profe;
-				enlaceDiccionario.addEventListener("click",enlaceVerComentarios,false);
-				tablaInformacionN.rows[i+1].cells[2].appendChild(enlaceDiccionario);
-			} else {
-				tablaInformacionN.rows[i+1].cells[2].innerHTML = gruposOrdenados.materias[i].grupos[horariosPosiblesAnteriores.combinacion[n].secuencia[i]].profe;
-			}
-			var j;
-			// alert("t "+materiasHorario.materias.length);
-			// log("##\n"+JSON.stringify(materiasHorario));
-			for (j = 0; j < materiasHorario.materias.length; j++){
-				// alert(tablaInformacionN.rows[i+1].cells[0].innerHTML+"/"+materiasHorario.materias[j].grupo);
-				if (tablaInformacionN.rows[i+1].cells[0].innerHTML == materiasHorario.materias[j].grupo &&  tablaInformacionN.rows[i+1].cells[1].innerHTML == materiasHorario.materias[j].materia){
-					break;
-				}
-			}
-			// alert(j);
-			for (var k = 3; k < 9; k++) {
-				tablaInformacionN.rows[i+1].cells[k].innerHTML = materiasHorario.materias[j].dias[k-3];
-			}
-			if (!mostrarSabado && materiasHorario.materias[j].dias[5] != "&nbsp;") mostrarSabado = true;
-		}
-		if (!mostrarSabado) {
-			// log("horariosGenerados - ocultando sábado");
-			for (var k = 0; k < tablaInformacionN.rows.length; k++){
-				tablaInformacionN.rows[k].cells[8].style.display = "none";
-			}
-		}
-
-		tablaInformacionN.setAttribute( 'id', ID_HORARIO_GENERADO_SEGMENTO+(n+1) );
-		tablaInformacionN.setAttribute( 'name', NOMBRE_CONTENEDOR_HORARIOS_GENERADOS );
-		resultadoHorarios.appendChild( tablaInformacionN );
-	}
 }
 
 function seleccionarHorario (){
 	if ( this.value != '' && this.value.length > 0 ){
 
 		var numeroResultado = parseInt( this.value );
-		if ( numeroResultado  >= 0  && 
+		if ( numeroResultado  >= 0  &&
 				numeroResultado <= document.getElementById( ID_CONTENEDOR_SELECCION_HORARIOS ).getAttribute( 'max' ) ){
 
 			switch (numeroResultado){
@@ -3748,21 +3804,184 @@ function seleccionarHorario (){
 function mostrarHorarioGenerado( numero ){
 	if ( numero <= totalHorarios ){
 		ocultarHorariosGenerados();
-		document.getElementById( ID_HORARIO_GENERADO_SEGMENTO+numero).removeAttribute('class');
-		document.getElementById( ID_CONTENEDOR_RESULTADOS_HORARIOS ).removeAttribute('class');
-		document.getElementById( ID_LISTA_SELECCION ).classList.add('oculto');
-		document.getElementById( ID_CONTENEDOR_CONTROLES_HORARIO ).classList.add('oculto');
-		document.getElementById( ID_CONTENEDOR_EXPORTAR ).classList.add('oculto');
+
+		document.getElementById( ID_HORARIO_GENERADO_SEGMENTO+numero).removeAttribute( 'class' );
+		document.getElementById( ID_CONTENEDOR_RESULTADOS_HORARIOS ).removeAttribute( 'class' );
+
+		ocultarListadoSeleccionAsignaturas();
 	}
 }
 
 function ocultarHorariosGenerados (){
 	var horariosGenerados = document.getElementsByName( 'horariosGenerados' );
-	for (var i = 0; i < horariosGenerados.length; i++) horariosGenerados[i].ocultar();
+	for ( var i = 0; i < horariosGenerados.length; i++) horariosGenerados[ i ].ocultar();
+}
+
+function construyeHorariosGenerados ( horariosPosiblesAnteriores, numeroResultados, gruposOrdenados ){
+	var tablaInformacion = getPlantillaHorarioResultado( horariosPosiblesAnteriores );
+
+	cargarMateriasHorarioGuardadas();
+
+	var resultadoHorarios = document.getElementById( ID_CONTENEDOR_RESULTADOS_HORARIOS );
+	reseteaContenidoElemento( resultadoHorarios );
+
+	for ( var n = 0; n < numeroResultados; n++ ){
+
+		var combinacionHorarioResultado = horariosPosiblesAnteriores.combinacion[ n ];
+		var tablaInformacionN = getHorarioResultado( tablaInformacion, combinacionHorarioResultado, n, gruposOrdenados );
+
+		tablaInformacionN.setAttribute( 'id', ID_HORARIO_GENERADO_SEGMENTO+(n+1) );
+		tablaInformacionN.setAttribute( 'name', NOMBRE_CONTENEDOR_HORARIOS_GENERADOS );
+		resultadoHorarios.appendChild( tablaInformacionN );
+	}
+}
+
+function reseteaContenidoElemento ( elemento ){
+	elemento.innerHTML = '';
+}
+
+function getHorarioResultado ( tablaInformacion, combinacionHorarioResultado, n, gruposOrdenados ){
+	var tablaInformacionN = tablaInformacion.cloneNode( true );
+
+	var posicionInformacionMateria = { posicion : 0 };
+	var mostrarSabado = false;
+
+	for ( var i = 0; i < combinacionHorarioResultado.secuencia.length; i++ ){
+
+		construyeHorarioResultado( tablaInformacionN, i, combinacionHorarioResultado,
+										gruposOrdenados, posicionInformacionMateria );
+
+		var materiaInformacion = materiasHorario.materias[ posicionInformacionMateria.posicion ];
+
+		if ( validaActivacionSabado( mostrarSabado, materiaInformacion ) ) mostrarSabado = true;
+	}
+
+	if ( !mostrarSabado ) {
+		ocultaSabadoHorario( tablaInformacionN );
+	}
+
+	return tablaInformacionN;
+}
+
+function construyeHorarioResultado ( tablaInformacionN, i, combinacionHorarioResultado, gruposOrdenados, posicionInformacionMateria ){
+
+	var registroTablaInformacion = tablaInformacionN.rows[ i+1 ];
+	var materiaGrupoOrdenado = gruposOrdenados.materias[ i ];
+	var materiaSeleccionadaGrupoOrdenado = materiaGrupoOrdenado.grupos[ combinacionHorarioResultado.secuencia[ i ] ];
+
+	registroTablaInformacion.cells[ COLUMNA_GRUPO ].innerHTML = materiaSeleccionadaGrupoOrdenado.grupo;
+	registroTablaInformacion.cells[ COLUMNA_NOMBRE_ASIGNATURA2 ].innerHTML = getNombreMateriaResultado( materiaGrupoOrdenado );
+	agregaNombreProfesorHorarioResultado( registroTablaInformacion, materiaSeleccionadaGrupoOrdenado );
+
+	posicionInformacionMateria.posicion = getPosicionRegistroInformacionMateria( registroTablaInformacion );
+	var registroInformacionMateria = getRegistroInformacionMateria( registroTablaInformacion, posicionInformacionMateria.posicion );
+
+	vaciaHorasMateria( registroTablaInformacion, registroInformacionMateria );
+}
+
+function getPlantillaHorarioResultado ( horariosPosiblesAnteriores ){
+	var tablaInformacion = document.createElement( 'table' );
+
+	tablaInformacion.ocultar();
+	tablaInformacion.innerHTML = getEstructuraDiasHorario();
+
+	var numeroRegistrosMaterias = horariosPosiblesAnteriores.combinacion[ 0 ].secuencia.length;
+
+	for ( var i = 0; i < numeroRegistrosMaterias; i++ ){
+		tablaInformacion.insertRow( i+1 );
+
+		for ( var k = 0; k < NUMERO_COLUMNAS_HORARIO_GENERADO; k++ ) tablaInformacion.rows[ i+1 ].insertCell( k );
+	}
+
+	return tablaInformacion;
+}
+
+function getEstructuraDiasHorario (){
+	return 	'<tr style="background-color:#FF9900; color:white;"><td>'+ MENSAJE_GRUPO
+				+ '</td> <td>'+ MENSAJE_MATERIA
+				+ '</td> <td>'+ MENSAJE_PROFESOR
+				+ '</td> <td>'+ MENSAJE_LUNES
+				+ '</td> <td>'+ MENSAJE_MARTES
+				+ '</td> <td>'+ MENSAJE_MIERCOLES
+				+ '</td> <td>'+ MENSAJE_JUEVES
+				+ '</td> <td>'+ MENSAJE_VIERNES
+				+ '</td> <td>'+ MENSAJE_SABADO
+			+ '</td> </tr>';
+}
+
+function getNombreMateriaResultado ( materiaGrupoOrdenado ){
+	if ( materiaGrupoOrdenado.materia == 'optativa' ){
+		return materiaGrupoOrdenado.grupos[ combinacionHorarioResultado.secuencia[ i ] ].materia;
+	}
+
+	return materiaGrupoOrdenado.materia;
+}
+
+function agregaNombreProfesorHorarioResultado ( registroTablaInformacion, materiaSeleccionadaGrupoOrdenado ){
+	if ( destinoConexion != '' ){
+
+		var enlaceDiccionario = getEnlaceReferenciaProfesor( materiaSeleccionadaGrupoOrdenado );
+		registroTablaInformacion.cells[ COLUMNA_PROFESOR ].appendChild( enlaceDiccionario );
+
+	} else {
+		registroTablaInformacion.cells[ COLUMNA_PROFESOR ].innerHTML = materiaSeleccionadaGrupoOrdenado.profe;
+	}
+}
+
+function getEnlaceReferenciaProfesor ( materiaSeleccionadaGrupoOrdenado ){
+	var enlaceDiccionario = document.createElement( 'a' );
+
+	enlaceDiccionario.href = '#';
+	enlaceDiccionario.setAttribute('style','color : #F90;');
+	enlaceDiccionario.innerHTML = materiaSeleccionadaGrupoOrdenado.profe;
+
+	enlaceDiccionario.addEventListener( 'click', enlaceVerComentarios, false );
+
+	return enlaceDiccionario;
+}
+
+function getRegistroInformacionMateria ( registroTablaInformacion, posicion ){
+
+	return materiasHorario.materias[ posicion ];
+}
+
+function getPosicionRegistroInformacionMateria ( registroTablaInformacion ){
+	var j;
+	var informacionMateria;
+	for ( j = 0; j < materiasHorario.materias.length; j++ ){
+
+		informacionMateria = materiasHorario.materias[ j ];
+		if ( registroTablaInformacion.cells[ COLUMNA_GRUPO ].innerHTML == informacionMateria.grupo &&
+				registroTablaInformacion.cells[ COLUMNA_NOMBRE_ASIGNATURA2 ].innerHTML == informacionMateria.materia ){
+
+			break;
+		}
+
+	}
+
+	return j;
+}
+
+function vaciaHorasMateria ( registroTablaInformacion, registroInformacionMateria ){
+	for ( var k = COLUMNA_INICIO_HORAS; k < NUMERO_COLUMNAS_HORARIO_GENERADO; k++ ) {
+
+		registroTablaInformacion.cells[ k ].innerHTML = registroInformacionMateria.dias[ k-COLUMNA_INICIO_HORAS ];
+	}
+}
+
+function validaActivacionSabado ( mostrarSabado, materiaInformacion ){
+	return ( !mostrarSabado && materiaInformacion.dias[ NUMERO_DIAS_HORARIO ] != ESPACIO_HTML );
+}
+
+function ocultaSabadoHorario ( tablaInformacionN ){
+	// log("horariosGenerados - ocultando sábado");
+	for ( var k = 0; k < tablaInformacionN.rows.length; k++ ){
+		tablaInformacionN.rows[ k ].cells[ COLUMNA_DIA_SABADO2 ].style.display = 'none';
+	}
 }
 
 function cargarTraslapes (){
-	if ( localStorage.traslapes != null && localStorage.traslapes != '' && 
+	if ( localStorage.traslapes != null && localStorage.traslapes != '' &&
 			localStorage.armadoOrdenado != null && localStorage.armadoOrdenado != ''){
 
 		informeTraslapes( JSON.parse( localStorage.traslapes ),JSON.parse( localStorage.armadoOrdenado ) );
@@ -3829,7 +4048,7 @@ function informeTraslapes ( infoTraslapes, gruposOrdenados ){
 			} else {
 				anchoSecuencia++;
 				traslapes.rows[posicionCambioSecuencia].cells[0].setAttribute( 'rowspan', anchoSecuencia );
-				filaDatos = 0;	
+				filaDatos = 0;
 			}
 			traslapes.rows[fila].cells[filaDatos].innerHTML = materias[i].materia;
 			traslapes.rows[fila].cells[filaDatos+1].innerHTML = materias[i].id;
@@ -3865,7 +4084,7 @@ function informeTraslapes ( infoTraslapes, gruposOrdenados ){
 		for (var i = 0; i < gruposOrdenados.materias.length; i++){
 			totalResultados *= gruposOrdenados.materias[i].grupos.length;
 		}
-		
+
 		for (var i = 0; i < infoTraslapes.length; i++){
 			traslapes.insertRow(i+1);
 			traslapes.rows[i+1].insertCell(0);
@@ -3879,7 +4098,7 @@ function informeTraslapes ( infoTraslapes, gruposOrdenados ){
 			traslapes.rows[i+1].cells[2].innerHTML = listaConflictos(infoTraslapes[i],materias);
 		}
 		detalles.children[0].children[1].appendChild(traslapes);
-		
+
 		var regresar = document.createElement( 'input' );
 		regresar.type = 'button';
 		regresar.value = MENSAJE_REGRESAR;
@@ -3902,6 +4121,180 @@ function informeTraslapes ( infoTraslapes, gruposOrdenados ){
 	} else {
 		localStorage.traslapes = "";
 	}
+}
+
+function agrupaMaterias (traslapes){
+	var materias = new Array();
+	var i, j, k, encontrado, materia;
+	for (i = 0, k = -1; i < traslapes.length;){
+		if (k < 0) {
+			materia = { nivel : traslapes[i].nivel, opcion : traslapes[i].opcion };
+			k++;
+		} else {
+			if (k < traslapes[i].colision.length){
+				materia = { nivel : traslapes[i].colision[k].nivel, opcion : traslapes[i].colision[k].opcion };
+				k++;
+			} else {
+				i++;
+				k = -1;
+			}
+		}
+		encontrado = false;
+		for (j = 0; !encontrado && j < materias.length; j++){
+			if (materias[j].nivel == materia.nivel && materias[j].opcion == materia.opcion){
+				encontrado = true;
+			}
+		}
+		if (!encontrado){
+			materias.push({ nivel : materia.nivel, opcion : materia.opcion });
+		}
+	}
+
+	return materias;
+}
+
+function nombreMaterias (materias, gruposOrdenados){
+	try {
+		for (var i = 0; i < materias.length; i++){
+			materias[i].secuencia = gruposOrdenados.materias[materias[i].nivel].grupos[materias[i].opcion].grupo;
+			if (gruposOrdenados.materias[materias[i].nivel].materia != "optativa"){
+				materias[i].materia = gruposOrdenados.materias[materias[i].nivel].materia;
+			} else {
+				materias[i].materia = gruposOrdenados.materias[materias[i].nivel].grupos[materias[i].opcion].materia;
+			}
+		}
+	} catch (error){
+		log("Problema presentacion de resultados");
+	}
+	return materias;
+}
+
+function ordenaSecuenciaMaterias (materias){
+	var ordenado = new Array()
+	if (materias.length > 1){
+		var i, j, almacenado;
+		for (i = 0; i < materias.length; i++){
+			almacenado = false;
+			for (j = 0; !almacenado && j < ordenado.length; j++){
+				if (materias[i].secuencia < ordenado[j].secuencia){
+					var temp, temp2;
+					if (j != 0 && j != ordenado.length-1){
+						// log("A"+j);
+						temp = ordenado.slice(0,j);
+						temp2 = ordenado.slice(j);
+						temp.push(materias[i]);
+						// log("#########\n["+ordenado.length+"]\n"+JSON.stringify(ordenado));
+						ordenado = temp.concat(temp2);
+						// ordenado = temp.slice(0);
+						// ordenado = temp;
+						// ordenado.push(materias[i]);
+						almacenado = true;
+						break;
+					}
+					if (j == 0){
+						// log("B");
+						ordenado.unshift(materias[i]);
+						almacenado = true;
+					}
+					if (j == ordenado.length-1){
+						// log("C");
+						temp = ordenado.pop();
+						ordenado.push(materias[i],temp);
+						almacenado = true;
+					}
+					break;
+				}
+			}
+			if (!almacenado){
+				// log("D");
+				ordenado.push(materias[i]);
+			}
+		}
+	} else ordenado = materias;
+	// log("["+ordenado.length+"]\n"+JSON.stringify(ordenado));
+	return ordenado;
+}
+
+function agregaIdMaterias (materias){
+	var letra = 65;
+	for (var i = 0; i < materias.length; i++, letra++){
+		materias[i].id = String.fromCharCode(letra);
+	}
+	return materias;
+}
+
+function verTraslapes (){
+	var materiasTraslapes = document.getElementsByName("traslape");
+	for (var i = 0; i < materiasTraslapes.length; i++){
+		materiasTraslapes[i].addEventListener("click",marcaTraslapes,true);
+	}
+}
+
+function marcaTraslapes (){
+	removerMarcaResaltado();
+	// log("1");
+	mostrarDetalleTraslapes(this);
+	// log("2");
+	var materias  = JSON.parse(localStorage.materiasTraslapes);
+	var traslapes = JSON.parse(localStorage.traslapes);
+	var detalle;
+	// log("3\n"+this.innerText);
+	for (var i = 0; i < materias.length; i++){
+		if (this.innerText == materias[i].id) {
+			// log("3.5\n"+JSON.stringify(materias[i]));
+			detalle = materias[i];
+			break;
+		}
+	}
+	for (var i = 0; i < traslapes.length; i++){
+		if (detalle.nivel == traslapes[i].nivel && detalle.opcion == traslapes[i].opcion) {
+			// log("3.8\n"+JSON.stringify(traslapes[i]));
+			detalle = traslapes[i];
+			break;
+		}
+	}
+	// log("4\n"+JSON.stringify(detalle));
+	detalle = datosTraslape(detalle, materias);
+	// log("5\n"+JSON.stringify(detalle));
+
+	//Quitando el estilo a los registros ya resaltados
+	removerResaltado();
+	// log("6");
+
+	//Agregando el estilo para resaltar
+	registros = document.querySelectorAll('div[name="contenedorRegistro"]');
+	for (i = 0; i < detalle.length; i++){
+		for (j = 0; j < registros.length; j++){
+			// log("6.1\n"+detalle[i].secuencia+" | "+registros[j].children[0].rows[0].cells[0].innerHTML+"\n"+detalle[i].materia+" | "+registros[j].children[0].rows[0].cells[1].innerHTML);
+			if (detalle[i].secuencia == registros[j].children[0].rows[0].cells[0].innerHTML && detalle[i].materia == registros[j].children[0].rows[0].cells[1].innerHTML){
+				// log("6.5");
+				registros[j].classList.add("resaltar");
+				registros[j].children[0].rows[0].cells[2].innerHTML = "<span class='resaltar'></span>"+registros[j].children[0].rows[0].cells[2].innerHTML;
+				break;
+			}
+		}
+	}
+	// log("7");
+}
+function removerMarcaResaltado (){
+	var posicionesFilasMarcas = new Array();
+	var registros = document.querySelectorAll('span.resaltar');
+	for (var i = 0; i < registros.length; i++){
+		registros[i].parentNode.removeChild(registros[i]);
+		// posicionesFilasMarcas.push(registros[i].parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.rowIndex);
+	}
+	// registros = document.getElementById("tablaAsignaturas");
+	// for (i = 0; i < posicionesFilasMarcas.length; i++){
+	// 	registros.rows[posicionesFilasMarcas[i]].cells[0].children[0].children[0].rows[0].cells[2].removeChild()
+	// }
+}
+function removerResaltado (){
+	// log("removerResaltado\t\t1");
+	var registros = document.querySelectorAll('div.resaltar');
+	for (var i = 0; i < registros.length; i++){
+		registros[i].classList.remove("resaltar");
+	}
+	// log("removerResaltado\t\t2");
 }
 
 function calculaImpacto ( materia, gruposOrdenados, totalResultados ){
@@ -3955,7 +4348,7 @@ function buscaIdentificador ( materia, materiasNombradas ){
 	var id;
 	for ( var i = 0; i < materiasNombradas.length; i++ ){
 
-		if ( materia.nivel == materiasNombradas[ i ].nivel && 
+		if ( materia.nivel == materiasNombradas[ i ].nivel &&
 				materia.opcion == materiasNombradas[ i ].opcion ){
 
 			id = materiasNombradas[ i ].id;
@@ -4091,6 +4484,8 @@ var COLUMNA_PROFESOR            = 2;
 var COLUMNA_MATERIA2            = 1;
 var COLUMNA_NOMBRE_ASIGNATURA   = 2;
 var COLUMNA_NOMBRE_ASIGNATURA2  = 1;
+var COLUMNA_INICIO_HORAS        = 3;
+var COLUMNA_DIA_SABADO2         = 8;
 
 var COLUMNA_AJUSTAR_NOMBRE_1 = 1;
 
@@ -4218,6 +4613,7 @@ var ID_TABLA_OPTATIVAS          = 'tablaOptativas';
 
 var NUMERO_DIAS_HORARIO = 6;
 var NUMERO_DIAS_SEMANA  = 5;
+var NUMERO_COLUMNAS_HORARIO_GENERADO = 9;
 
 var SELECTOR_REGISTROS_RESALTADOS = 'span.resaltar';
 var SELECTOR_CELDAS_SABADO = '#tablaAsignaturas td[name="sabado"]';
@@ -4289,6 +4685,12 @@ var MENSAJE_MARCAR_TRASLAPE   = 'Marcar el traslape';
 var MENSAJE_VER_TRASLAPES     = '» Ver detalles de traslapes';
 
 var ID_CONTENEDOR_TRASLAPES = 'detalleTraslapes';
+
+var MENSAJE_VER_TODOS_RESULTADOS = 'Ver resultados';
+var MENSAJE_OCULTAR_TODOS_RESULTADOS = 'Ocultar resultados';
+
+var SELECTOR_HORARIO_GENERADO = '[name=horariosGenerados]';
+var ID_CONTROL_VER_TODOS_RESULTADOS = 'verTodosResultados';
 
 function iniciar (){
 	try {
