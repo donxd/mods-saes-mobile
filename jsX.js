@@ -4390,6 +4390,22 @@ function muestraAccesosApp (){
 	}
 }
 
+function presentacionHorizontal (){
+	if ( siPantallaHorarios() ){
+		document.querySelector( '.container > h2' ).innerHTML = 'Horizontal';
+	}
+}
+
+function siPantallaHorarios (){
+	return location.pathname == PAGINA_HORARIOS;
+}
+
+function presentacionVertical (){
+	if ( siPantallaHorarios() ){
+		document.querySelector( '.container > h2' ).innerHTML = 'Vertical';
+	}
+}
+
 var IDENTIFICACION_USUARIO  = 'usuario';
 var IDENTIFICACION_PASSWORD = 'password';
 
