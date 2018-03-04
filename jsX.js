@@ -1749,14 +1749,16 @@ function pantallaHorarios (){
 		cargarMateriasHorario();
 		seleccionOptativas();
 		cargarOptativas();
-		inicializarOrdenamiento();
+		// inicializarOrdenamiento();
 		verComentarios();
 		cargarHorariosGenerados();
 		cargarTraslapes();
 		// informacionExtra();
-
+		// realizarAjustePantalla();
 	}
 
+	agregaComportamientoTamanioPantalla();
+	presentaMedidasPantalla();
 }
 
 function hayInformacionHorarios (){
@@ -1794,6 +1796,7 @@ function mostrarHorario (){
 	//verifica que antes tenga algunos datos para mostrar
 	if ( atajoHorarios ){
 		document.getElementById( ID_CONTENEDOR_MATERIAS_SELECCIONADAS ).removeAttribute( 'class' );
+		realizarAjustePantalla();
 	}
 }
 
@@ -2087,6 +2090,7 @@ function construyeRegistroSeleccion ( materiaH ){
 	// var eventoDrop      = 'drop';
 	// var eventoDragEnd   = 'dragend';
 
+	/*
 	var eventoDragStart = 'touchstart';
 	var eventoDragEnter = 'touchenter';
 	var eventoDragOver  = 'dragover';
@@ -2101,6 +2105,7 @@ function construyeRegistroSeleccion ( materiaH ){
 	celdaContenedor.addEventListener( eventoDrop, ingresando, false );
 	celdaContenedor.addEventListener( eventoDragEnd, soltando, false );
 	celdaContenedor.setAttribute( 'draggable', true );
+	*/
 	celdaContenedor.className = 'fuera';
 
 	materiaH = materiaH.cells[ POSICION_INICIAL ].querySelector( SELECTOR_REGISTROS );
@@ -2796,7 +2801,7 @@ function getControlMateriasSeleccionadas (){
 			"</table>"+
 		"</div>"+
 		"<div id='"+ ID_CONTENEDOR_CONTROLES_HORARIO +"'>"+
-			"<input type='button' id='"+ ID_CONTROL_EXPORTAR +"' value='"+MENSAJE_EXPORTAR+"' title='"+ MENSAJE_EXPORTAR_DESCRIPCION +"'/>"+
+			"<input type='button' id='"+ ID_CONTROL_EXPORTAR +"' value='"+MENSAJE_EXPORTAR+"' title='"+ MENSAJE_EXPORTAR_DESCRIPCION +"' class='oculto'/>"+
 			"<input type='button' id='"+ ID_CONTROL_BORRAR_SELECCION +"' value='"+ MENSAJE_BORRAR_SELECCION +"'/>"+
 			"<input type='button' id='"+ ID_CONTROL_GENERAR_HORARIOS +"' value='"+ MENSAJE_GENERAR_HORARIOS +"'/>"+
 			"<input type='button' id='"+ ID_CONTROL_OPTATIVAS +"' value='"+MENSAJE_OPTATIVAS+"'/>"+
@@ -2819,17 +2824,19 @@ function getEstiloSeleccionMaterias (){
 
 function agregaEstilosSeleccionMaterias ( estilosSeleccionMaterias ){
 
-	var anchoSeleccion = getAnchoContenedorSeleccionMaterias();
+	// var anchoSeleccion = getAnchoContenedorSeleccionMaterias();
 
 	estilosSeleccionMaterias.innerHTML =
 		// 'div#asignaturas { min-height : 80px; min-width : 250px; position : fixed; background-color : maroon; color : white; top : 6%; left : 50%; opacity : 0.85; z-index : 1; font-size : 17px; margin : 0px 0px 0px -525px; box-shadow: 0 0 20px 5px #000; width: 1050px; } ';
-		'div#asignaturas { position : fixed; background-color : maroon; color : white; top : 0%; left : 0%; opacity : 0.85; z-index : 1; font-size : 17px; box-shadow: 0 0 20px 5px #000; width: 100%; heigth : 90%; } ';
+		'div#asignaturas { position : fixed; background-color : maroon; color : white; top : 0%; left : 0%; opacity : 0.85; z-index : 1; font-size : 17px; box-shadow: 0 0 20px 5px #000; min-width: 100%; max-height : 100%; } ';
 	estilosSeleccionMaterias.innerHTML +=
 		'div#asignaturas > div:nth-child(1) { background-color : #000; color : #FFF; } ';
 	estilosSeleccionMaterias.innerHTML +=
-		'div#resultadoHorarios { overflow-y : auto; max-height : '+anchoSeleccion+'px; } ';
+		//'div#resultadoHorarios { overflow-y : auto; max-height : '+anchoSeleccion+'px; } ';
+		'div#resultadoHorarios { overflow-y : auto; } ';
 	estilosSeleccionMaterias.innerHTML +=
-		'div#asignaturasSeleccionadas { overflow-y:auto; max-height: '+anchoSeleccion+'px; } ';
+		// 'div#asignaturasSeleccionadas { overflow-y:auto; max-height: '+anchoSeleccion+'px; } ';
+		'div#asignaturasSeleccionadas { overflow-y:auto; } ';
 	estilosSeleccionMaterias.innerHTML +=
 		'div#asignaturasSeleccionadas > table { width:100%; } ';
 	estilosSeleccionMaterias.innerHTML +=
@@ -3159,13 +3166,16 @@ function generarHorarios (){
 			presentarHorariosGenerados(horariosPosiblesAnteriores,gruposOrdenados);
 		} else {
 			// log("-> Generando horarios....1.3.2");
-			document.getElementById( ID_CONTENEDOR_INFORMACION_HORARIOS ).innerHTML = MENSAJE_SIN_RESULTADOS;
+			document.getElementById( ID_CONTENEDOR_INFORMACION_HORARIOS ).innerHTML = 
+				'<table style="margin:0px auto;"><tr><td>'+ MENSAJE_SIN_RESULTADOS +'</td><td></td><tr>';
 			cargarMateriasHorarioGuardadas();
 		}
 		informeTraslapes( traslapes, gruposOrdenados );
 		horariosPosiblesAnteriores = null;
 	}
 	// log("-> Generando horarios....2");
+
+	ajustaContenedoresTamanioPantalla();
 }
 
 function removerResaltado (){
@@ -4112,9 +4122,11 @@ function informeTraslapes ( infoTraslapes, gruposOrdenados ){
 
 		//Colocando el botón en los controles, si es que hay resultados
 		var informacionHorarios = document.getElementById( ID_CONTENEDOR_INFORMACION_HORARIOS );
-		if ( informacionHorarios.innerText != MENSAJE_SIN_RESULTADOS ){
+		if ( informacionHorarios.children[0].rows[0].cells[0].innerText != MENSAJE_SIN_RESULTADOS ){
 			// log("##"+informacionHorarios.innerHTML);
 			informacionHorarios = informacionHorarios.children[0].rows[0].cells[2];
+		} else {
+			informacionHorarios = informacionHorarios.children[0].rows[0].cells[1];
 		}
 		informacionHorarios.appendChild(botonDetalles);
 		verTraslapes();
@@ -4392,7 +4404,7 @@ function muestraAccesosApp (){
 
 function presentacionHorizontal (){
 	if ( siPantallaHorarios() ){
-		document.querySelector( '.container > h2' ).innerHTML = 'Horizontal';
+		document.querySelector( '.container > h2' ).innerHTML = 'Horizontal ['+ window.innerWidth + ',' + window.innerHeight + ']';
 	}
 }
 
@@ -4402,8 +4414,60 @@ function siPantallaHorarios (){
 
 function presentacionVertical (){
 	if ( siPantallaHorarios() ){
-		document.querySelector( '.container > h2' ).innerHTML = 'Vertical';
+		document.querySelector( '.container > h2' ).innerHTML = 'Vertical ['+ window.innerWidth + ',' + window.innerHeight + ']';
 	}
+}
+
+var ajustandoPantalla = false;
+function agregaComportamientoTamanioPantalla (){
+	window.onresize = function (){
+		if ( !ajustandoPantalla ){
+			setTimeout( realizarAjustePantalla, TIEMPO_ACTUALIZACION_PANTALLA );
+			ajustandoPantalla = true;
+		}
+	}
+}
+
+function realizarAjustePantalla (){
+	eliminaAjustesAnteriores();
+	presentaMedidasPantalla();
+	ajustaContenedoresTamanioPantalla();
+	ajustandoPantalla = false;
+}
+
+function eliminaAjustesAnteriores (){
+	var contenedorResultadoHorarios = document.getElementById( ID_CONTENEDOR_RESULTADOS_HORARIOS );
+	var contenedorAsignaturasSeleccionadas = document.getElementById( ID_LISTA_SELECCION );
+
+	contenedorResultadoHorarios.removeAttribute( 'style' );
+	contenedorAsignaturasSeleccionadas.removeAttribute( 'style' );
+}
+
+function presentaMedidasPantalla (){
+	document.querySelector( '.container > h2' ).innerHTML = '[ w : '+ window.innerWidth + ', h : ' + window.innerHeight + ' ]';
+}
+
+function ajustaContenedoresTamanioPantalla (){
+	var contenedorResultadoHorarios = document.getElementById( ID_CONTENEDOR_RESULTADOS_HORARIOS );
+	var contenedorAsignaturasSeleccionadas = document.getElementById( ID_LISTA_SELECCION );
+
+	var alturaRegresar = document.querySelector( '.regresar' ).offsetHeight;
+	var alturaControlesHorarios = document.getElementById( ID_CONTENEDOR_CONTROLES_HORARIO ).offsetHeight;
+	var alturaInformacionHorarios = 0;
+
+	var contenedorInformacionHorarios = document.getElementById( ID_CONTENEDOR_INFORMACION_HORARIOS );
+	if ( !contenedorInformacionHorarios.classList.contains( 'oculto' ) ){
+		alturaInformacionHorarios = contenedorInformacionHorarios.offsetHeight;
+	}
+
+	var alturaAsignaturas = document.getElementById( ID_CONTENEDOR_MATERIAS_SELECCIONADAS ).offsetHeight;
+
+	var medidaAjuste = 'calc( '+ alturaAsignaturas +'px - '+ alturaRegresar +'px - '+ alturaControlesHorarios +'px - '+ alturaInformacionHorarios +'px ) !important;';
+
+	contenedorResultadoHorarios.setAttribute( 'style', 'max-height : ' + medidaAjuste );
+	contenedorAsignaturasSeleccionadas.setAttribute( 'style', 'max-height : ' + medidaAjuste );
+
+	log( 'Pantalla ajustada' );
 }
 
 var IDENTIFICACION_USUARIO  = 'usuario';
@@ -4583,6 +4647,7 @@ var POSICION_INICIO_NOMBRE_PLANTEL = 9;
 
 var TIEMPO_ACTUALIZACION_REINSCRIBIR = 500;
 var TIEMPO_VERIFICACION_IDENTIFICACION = 1000;
+var TIEMPO_ACTUALIZACION_PANTALLA = 1000;
 
 var ESPACIO_HTML = '&nbsp;';
 
